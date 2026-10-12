@@ -28,7 +28,7 @@
   <meta name="twitter:image" content="https://leguane-landau.de/assets/og-image.jpg">
 
   <!-- Privacy-friendly / Cookie-free: Local System Font Stack & SVG Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%2310b981'/><circle cx='50' cy='50' r='30' fill='none' stroke='%23ffffff' stroke-width='6'/><circle cx='50' cy='50' r='10' fill='%23fbbf24'/></svg>">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23006D5F'/><circle cx='50' cy='50' r='30' fill='none' stroke='%23B5EAE6' stroke-width='6'/><circle cx='50' cy='50' r='10' fill='%23D2FE6D'/></svg>">
   
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css">
@@ -38,18 +38,18 @@
   <!-- Skip to Content Link for Accessibility -->
   <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
 
+  <div class="scroll-video-background" aria-hidden="true">
+    <video id="scrollBackgroundVideo" muted playsinline preload="metadata" tabindex="-1">
+      <source src="assets/Background-Animation/Test-Website-BG.mp4" type="video/mp4">
+    </video>
+    <div class="scroll-video-overlay"></div>
+  </div>
+
   <!-- Header & Navigation -->
   <header class="site-header" id="header">
     <div class="container header-container">
       <a href="#hero" class="brand-logo" aria-label="Leguane Landau e.V. Startseite">
-        <!-- SVG Logo Icon -->
-        <span class="logo-icon" aria-hidden="true">
-          <svg viewBox="0 0 40 40" width="34" height="34">
-            <circle cx="20" cy="20" r="18" fill="var(--color-primary)" />
-            <circle cx="20" cy="20" r="11" fill="none" stroke="var(--color-surface)" stroke-width="3" />
-            <circle cx="20" cy="20" r="4" fill="var(--color-accent)" />
-          </svg>
-        </span>
+        <img class="brand-logo-image" src="assets/neues%20Logo/Logo_Normal.png" alt="" aria-hidden="true">
         <span class="brand-text">Leguane <span>Landau</span></span>
       </a>
 
@@ -602,7 +602,7 @@
             Wenn du stattdessen ein externes Formular einbetten möchtest:
             1. Erstelle ein Formular auf https://tally.so oder Google Forms
             2. Ersetze die URL im iframe unten durch deine Formular-URL
-            3. Entferne die HTML-Kommentarzeichen (<!-- und -->)
+            3. Entferne die HTML-Kommentarzeichen rund um den iframe-Block
             ===================================================================
             -->
             <!--
@@ -757,13 +757,7 @@
     <div class="container footer-container">
       <div class="footer-col brand-col">
         <div class="footer-brand">
-          <span class="logo-icon" aria-hidden="true">
-            <svg viewBox="0 0 40 40" width="28" height="28">
-              <circle cx="20" cy="20" r="18" fill="var(--color-primary)" />
-              <circle cx="20" cy="20" r="11" fill="none" stroke="var(--color-surface)" stroke-width="3" />
-              <circle cx="20" cy="20" r="4" fill="var(--color-accent)" />
-            </svg>
-          </span>
+          <img class="footer-logo-image" src="assets/neues%20Logo/Logo_INversion.png" alt="" aria-hidden="true">
           <span class="brand-text">Leguane Landau e.V.</span>
         </div>
         <p class="footer-tagline">Dein Sportverein für Roundnet, Bewegung und Teamgeist in Landau in der Pfalz.</p>

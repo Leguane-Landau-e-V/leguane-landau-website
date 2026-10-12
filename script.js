@@ -15,7 +15,55 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 2. Sticky Header Shadow on Scroll
+  // 2. Scroll-Scrubbed Background Video
+  // --------------------------------------------------------------------------
+  const backgroundVideo = document.getElementById('scrollBackgroundVideo');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (backgroundVideo && !prefersReducedMotion.matches) {
+    let scrollProgress = 0;
+    let syncRequest = 0;
+
+    function syncVideoFrame() {
+      syncRequest = 0;
+
+      if (
+        backgroundVideo.readyState < HTMLMediaElement.HAVE_METADATA ||
+        !Number.isFinite(backgroundVideo.duration) ||
+        backgroundVideo.seeking
+      ) {
+        return;
+      }
+
+      const targetTime = scrollProgress * backgroundVideo.duration;
+      if (Math.abs(backgroundVideo.currentTime - targetTime) > 1 / 30) {
+        backgroundVideo.currentTime = targetTime;
+      }
+    }
+
+    function scheduleVideoSync() {
+      if (!syncRequest) {
+        syncRequest = window.requestAnimationFrame(syncVideoFrame);
+      }
+    }
+
+    function updateScrollProgress() {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress = scrollableHeight > 0
+        ? Math.min(1, Math.max(0, window.scrollY / scrollableHeight))
+        : 0;
+      scheduleVideoSync();
+    }
+
+    backgroundVideo.addEventListener('loadedmetadata', scheduleVideoSync);
+    backgroundVideo.addEventListener('seeked', scheduleVideoSync);
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    window.addEventListener('resize', updateScrollProgress);
+    updateScrollProgress();
+  }
+
+  // --------------------------------------------------------------------------
+  // 3. Sticky Header Shadow on Scroll
   // --------------------------------------------------------------------------
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
@@ -27,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   // --------------------------------------------------------------------------
-  // 3. Mobile Navigation Toggle
+  // 4. Mobile Navigation Toggle
   // --------------------------------------------------------------------------
   const navToggle = document.getElementById('navToggle');
   const primaryNav = document.getElementById('primaryNav');
@@ -83,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 4. Accessible Accordion FAQ
+  // 5. Accessible Accordion FAQ
   // --------------------------------------------------------------------------
   const accordionButtons = document.querySelectorAll('.accordion-header');
 
@@ -115,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 5. Accessible Contact & Membership Form Validation
+  // 6. Accessible Contact & Membership Form Validation
   // --------------------------------------------------------------------------
   const contactForm = document.getElementById('contactForm');
   const successAlert = document.getElementById('formSuccessMessage');
@@ -241,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 6. Modals (Impressum & Datenschutz Dialogs)
+  // 7. Modals (Impressum & Datenschutz Dialogs)
   // --------------------------------------------------------------------------
   const modalOpenButtons = document.querySelectorAll('[data-open-modal]');
   const modalCloseButtons = document.querySelectorAll('[data-close-modal]');

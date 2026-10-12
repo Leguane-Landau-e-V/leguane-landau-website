@@ -8,35 +8,35 @@
    -------------------------------------------------------------------------- */
 :root {
   /* Color Palette */
-  --color-primary: #0d9488;         /* Fresh Teal */
-  --color-primary-hover: #0f766e;
-  --color-primary-light: #ccfbf1;
-  --color-secondary: #1e293b;       /* Slate Dark */
-  --color-secondary-hover: #0f172a;
-  --color-accent: #f59e0b;          /* Vibrant Amber / Gold */
-  --color-accent-hover: #d97706;
+  --color-primary: #006D5F;         /* Blue Spruce */
+  --color-primary-hover: #00574C;
+  --color-primary-light: #B5EAE6;   /* Icy Aqua */
+  --color-secondary: #000000;
+  --color-secondary-hover: #006D5F;
+  --color-accent: #D2FE6D;          /* Lime Cream */
+  --color-accent-hover: #B5EAE6;
   
   /* Background & Surface Colors */
-  --color-bg: #ffffff;
-  --color-bg-light: #f8fafc;
-  --color-surface: #ffffff;
-  --color-surface-card: #ffffff;
-  --color-border: #e2e8f0;
-  --color-border-focus: #0d9488;
+  --color-bg: #B5EAE6;
+  --color-bg-light: rgba(181, 234, 230, 0.82);
+  --color-surface: rgba(181, 234, 230, 0.96);
+  --color-surface-card: rgba(181, 234, 230, 0.96);
+  --color-border: rgba(0, 109, 95, 0.22);
+  --color-border-focus: #006D5F;
   
   /* Text Colors */
-  --color-text-main: #1e293b;
-  --color-text-muted: #64748b;
-  --color-text-light: #94a3b8;
+  --color-text-main: #000000;
+  --color-text-muted: rgba(0, 0, 0, 0.72);
+  --color-text-light: rgba(0, 0, 0, 0.56);
   --color-text-inverse: #ffffff;
 
   /* State & Feedback Colors */
-  --color-success-bg: #ecfdf5;
-  --color-success-border: #6ee7b7;
-  --color-success-text: #065f46;
-  --color-error-bg: #fef2f2;
-  --color-error-border: #fca5a5;
-  --color-error-text: #991b1b;
+  --color-success-bg: rgba(181, 234, 230, 0.82);
+  --color-success-border: #006D5F;
+  --color-success-text: #000000;
+  --color-error-bg: rgba(0, 0, 0, 0.08);
+  --color-error-border: #000000;
+  --color-error-text: #000000;
 
   /* Typography (High Performance System Font Stack) */
   --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -96,12 +96,51 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  isolation: isolate;
+  background: transparent;
 }
 
 img, svg {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+.scroll-video-background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+  pointer-events: none;
+}
+
+.scroll-video-background video,
+.scroll-video-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-video-background video {
+  object-fit: cover;
+  object-position: center;
+}
+
+.scroll-video-overlay {
+  background: linear-gradient(
+    145deg,
+    rgba(181, 234, 230, 0.72),
+    rgba(181, 234, 230, 0.84)
+  );
+}
+
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
 }
 
 a {
@@ -178,7 +217,7 @@ button, input, select, textarea {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-primary);
+  color: var(--color-secondary);
   background-color: var(--color-primary-light);
   padding: 0.25rem 0.75rem;
   border-radius: var(--border-radius-pill);
@@ -300,7 +339,7 @@ button, input, select, textarea {
   font-weight: 700;
   text-transform: uppercase;
   background-color: var(--color-accent);
-  color: #ffffff;
+  color: var(--color-secondary);
   border-radius: var(--border-radius-sm);
   margin-bottom: var(--space-xs);
 }
@@ -312,7 +351,7 @@ button, input, select, textarea {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(181, 234, 230, 0.92);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--color-border);
@@ -339,6 +378,13 @@ button, input, select, textarea {
   font-size: 1.25rem;
   font-weight: 800;
   color: var(--color-secondary);
+}
+
+.brand-logo-image {
+  width: 34px;
+  height: 38px;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
 
 .brand-logo:hover {
@@ -406,7 +452,7 @@ button, input, select, textarea {
 .hero-section {
   padding-top: calc(var(--space-3xl) + 1rem);
   padding-bottom: var(--space-3xl);
-  background: linear-gradient(145deg, #f0fdfa 0%, #f8fafc 100%);
+  background: linear-gradient(145deg, rgba(181, 234, 230, 0.72), rgba(181, 234, 230, 0.84));
   position: relative;
   overflow: hidden;
 }
@@ -478,7 +524,7 @@ button, input, select, textarea {
 }
 
 .hero-visual-card {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #0f766e 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
   color: #ffffff;
   padding: var(--space-xl);
   border-radius: var(--border-radius-lg);
@@ -650,7 +696,7 @@ button, input, select, textarea {
 
 .event-card.event-special {
   border-left: 5px solid var(--color-accent);
-  background: linear-gradient(90deg, #fffdf8 0%, #ffffff 100%);
+  background: linear-gradient(90deg, rgba(210, 254, 109, 0.42), var(--color-surface));
 }
 
 .event-date {
@@ -773,10 +819,10 @@ button, input, select, textarea {
   transform: scale(1.03);
 }
 
-.bg-gradient-1 { background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); color: #ffffff; }
-.bg-gradient-2 { background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%); color: #ffffff; }
-.bg-gradient-3 { background: linear-gradient(135deg, #d97706 0%, #fbbf24 100%); color: #ffffff; }
-.bg-gradient-4 { background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%); color: #ffffff; }
+.bg-gradient-1 { background: linear-gradient(135deg, #B5EAE6 0%, #D2FE6D 100%); color: #000000; }
+.bg-gradient-2 { background: linear-gradient(135deg, #D2FE6D 0%, #B5EAE6 100%); color: #000000; }
+.bg-gradient-3 { background: linear-gradient(135deg, #D2FE6D 0%, #B5EAE6 100%); color: #000000; }
+.bg-gradient-4 { background: linear-gradient(135deg, #B5EAE6 0%, #D2FE6D 100%); color: #000000; }
 
 .placeholder-content {
   display: flex;
@@ -867,7 +913,7 @@ figcaption {
    13. Membership & Form Section
    -------------------------------------------------------------------------- */
 .section-join {
-  background: linear-gradient(135deg, #0d9488 0%, #115e59 100%);
+  background: linear-gradient(135deg, rgba(0, 109, 95, 0.94), rgba(0, 0, 0, 0.9));
   color: #ffffff;
 }
 
@@ -973,7 +1019,7 @@ figcaption {
 }
 
 .required {
-  color: #dc2626;
+  color: var(--color-secondary);
   font-weight: 700;
 }
 
@@ -995,19 +1041,19 @@ figcaption {
 .form-group textarea:focus {
   border-color: var(--color-border-focus);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+  box-shadow: 0 0 0 3px rgba(0, 109, 95, 0.2);
 }
 
 .form-group input.input-invalid,
 .form-group select.input-invalid,
 .form-group textarea.input-invalid {
-  border-color: #dc2626;
-  background-color: #fffaf0;
+  border-color: var(--color-error-border);
+  background-color: var(--color-error-bg);
 }
 
 .field-error {
   font-size: 0.8rem;
-  color: #dc2626;
+  color: var(--color-error-text);
   margin-top: 0.3rem;
   min-height: 1.1rem;
 }
@@ -1046,6 +1092,10 @@ figcaption {
   padding: var(--space-md);
   border-radius: var(--border-radius-sm);
   margin-bottom: var(--space-lg);
+}
+
+.alert[hidden] {
+  display: none;
 }
 
 .alert-success {
@@ -1130,7 +1180,7 @@ figcaption {
 }
 
 .modal-dialog::backdrop {
-  background-color: rgba(15, 23, 42, 0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(3px);
 }
 
@@ -1196,7 +1246,7 @@ figcaption {
    16. Footer
    -------------------------------------------------------------------------- */
 .site-footer {
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
   color: var(--color-text-inverse);
   margin-top: auto;
   padding-top: var(--space-3xl);
@@ -1217,6 +1267,13 @@ figcaption {
   font-size: 1.2rem;
   font-weight: 800;
   margin-bottom: var(--space-sm);
+}
+
+.footer-logo-image {
+  width: 28px;
+  height: 30px;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
 
 .footer-tagline {
@@ -1281,7 +1338,7 @@ figcaption {
 
 .footer-bottom {
   padding: var(--space-md) 0;
-  background-color: #0f172a;
+  background-color: #000000;
   font-size: 0.85rem;
   color: rgba(255, 255, 255, 0.6);
 }
@@ -1404,5 +1461,11 @@ figcaption {
 
   .form-row {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-video-background {
+    display: none;
   }
 }

@@ -13,6 +13,7 @@ Website/
 ├── index.html        # Hauptstruktur, Texte, SEO & Metadaten, Modals
 ├── style.css         # Modernes CSS-Design, Farbvariablen, Responsive Grid
 ├── script.js         # Navigation, FAQ-Akkordeon, Formularvalidierung
+├── assets/           # Vereinslogos und Scroll-Hintergrundvideo
 └── README.md         # Schritt-für-Schritt-Anleitung & Deployment-Guide
 ```
 
@@ -39,11 +40,14 @@ Alle Stellen, die individuelle Vereinsangaben benötigen, sind im Code mit `[PLA
 Ganz oben in den `:root`-Variablen kannst du mit einem Klick das Farbschema anpassen:
 ```css
 :root {
-  --color-primary: #0d9488;  /* Hauptfarbe (z.B. Vereinsgrün oder -blau) */
-  --color-accent: #f59e0b;   /* Akzentfarbe (z.B. Ball-Gelb) */
-  --color-secondary: #1e293b;/* Dunkle Schrift & Header */
+  --color-primary: #006D5F;  /* Blue Spruce */
+  --color-primary-light: #B5EAE6; /* Icy Aqua */
+  --color-accent: #D2FE6D;   /* Lime Cream */
+  --color-secondary: #000000;
 }
 ```
+
+Das Video `assets/Background-Animation/Test-Website-BG.mp4` wird beim Scrollen über die gesamte Seitenhöhe gesteuert: Der aktuelle Frame folgt der Scrollposition, statt automatisch abzuspielen. Es ist stumm eingebunden; Nutzer mit aktivierter Einstellung „Bewegung reduzieren“ sehen stattdessen den statischen Farb-Hintergrund.
 
 ---
 
@@ -98,27 +102,33 @@ Cloudflare Pages bietet unbegrenzte Bandbreite, weltweites CDN, kostenloses SSL/
 
 ## 5. 🌐 Wie verbinde ich `leguane-landau.de` (Namecheap) mit Cloudflare Pages?
 
-### Schritt 1: Eigene Domain in Cloudflare Pages hinzufügen
-1. Gehe in deinem Cloudflare Pages Projekt auf den Reiter **Custom domains**.
-2. Klicke auf **Set up a custom domain**.
-3. Gib `leguane-landau.de` ein und bestätige.
+Die Domain wird komplett von Cloudflare verwaltet (Nameserver-Methode). Das ist der zuverlässige Weg für die Hauptdomain ohne `www`.
 
-### Schritt 2: DNS-Einträge bei Namecheap hinterlegen
-Melde dich bei [Namecheap.com](https://www.namecheap.com) an:
-1. Gehe zu **Domain List** und klicke neben `leguane-landau.de` auf **Manage**.
-2. Klicke auf den Reiter **Advanced DNS**.
-3. Füge folgende DNS-Records hinzu:
-   - **Typ:** `CNAME Record`
-   - **Host:** `@`
-   - **Value:** `leguane-landau-website.pages.dev`
-   - **TTL:** `Automatic` (oder 1 min)
-   
-   - **Typ:** `CNAME Record`
-   - **Host:** `www`
-   - **Value:** `leguane-landau-website.pages.dev`
-   - **TTL:** `Automatic`
-4. *Hinweis:* Wenn Namecheap keinen CNAME auf `@` (Root Domain) erlaubt, nutze den `ALIAS` oder `ANAME` Record oder ändere die Nameserver direkt auf Cloudflare DNS (empfohlen für volle Cloudflare-Sicherheitsfeatures).
-5. Das SSL-Zertifikat wird von Cloudflare automatisch und kostenlos ausgestellt.
+### Schritt 1: Domain zu Cloudflare hinzufügen
+1. Im Cloudflare-Dashboard auf [dash.cloudflare.com](https://dash.cloudflare.com) **Add a domain** klicken.
+2. `leguane-landau.de` eingeben und den **Free**-Plan wählen.
+3. Cloudflare scannt vorhandene DNS-Einträge. Vergleiche sie mit **Namecheap > Advanced DNS** und übernimme nur bewusst angelegte Einträge (z.B. MX/TXT für E-Mail). Namecheap-Parking-Einträge (URL Redirect, `parkingpage.namecheap.com`) **nicht** übernehmen.
+4. Cloudflare zeigt dir **zwei Nameserver** an (Muster: `name.ns.cloudflare.com`). Diese sind für jeden Account verschieden.
+
+### Schritt 2: Nameserver bei Namecheap ändern
+1. Bei [Namecheap.com](https://www.namecheap.com): **Domain List** > **Manage** neben `leguane-landau.de`.
+2. Bei **Nameservers** **Custom DNS** auswählen.
+3. Beide Cloudflare-Nameserver eintragen (ohne Leerzeichen oder Punkt am Ende) und mit dem grünen Haken speichern.
+4. **DNSSEC** bei Namecheap muss ausgeschaltet sein.
+5. In Cloudflare auf **Check nameservers now** klicken. Die Aktivierung dauert meist 1–2 Stunden (maximal 24 Stunden). Du erhältst eine E-Mail, sobald die Domain **Active** ist.
+
+### Schritt 3: Domain mit Cloudflare Pages verbinden
+Erst wenn die Domain **Active** ist:
+1. **Workers & Pages** > dein Projekt > **Custom domains** > **Set up a custom domain**.
+2. `leguane-landau.de` eingeben und **Activate domain** klicken (Cloudflare legt den DNS-Eintrag selbst an).
+3. Das Gleiche für `www.leguane-landau.de` wiederholen.
+4. Warte, bis beide **Active** zeigen. Das SSL-Zertifikat wird automatisch und kostenlos ausgestellt.
+
+### Schritt 4: Einstellungen prüfen
+- **SSL/TLS** > Modus **Full (strict)** (nicht *Flexible*).
+- **SSL/TLS** > **Edge Certificates** > **Always Use HTTPS** aktivieren.
+- Optional: unter **Rules > Redirect Rules** `www.leguane-landau.de` per 301 auf `https://leguane-landau.de` weiterleiten.
+- Für E-Mail-Adressen wie `kontakt@leguane-landau.de` kann **Cloudflare Email Routing** (kostenlos) genutzt werden.
 
 ---
 
