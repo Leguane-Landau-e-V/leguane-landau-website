@@ -54,14 +54,79 @@ document.addEventListener('DOMContentLoaded', () => {
       scheduleVideoSync();
     }
     backgroundVideo.addEventListener('loadedmetadata', scheduleVideoSync);
-    backgroundVideo.addEventListener('loadedmetadata', scheduleVideoSync);
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     window.addEventListener('resize', updateScrollProgress);
     updateScrollProgress();
   }
 
   // --------------------------------------------------------------------------
-  // 3. Sticky Header Shadow on Scroll
+  // 3. Protected WhatsApp Group Access
+  // --------------------------------------------------------------------------
+  const whatsappJoinButton = document.getElementById('whatsappJoinButton');
+  const whatsappJoinStatus = document.getElementById('whatsappJoinStatus');
+  let turnstileToken = '';
+
+  function setWhatsAppStatus(message) {
+    if (whatsappJoinStatus) {
+      whatsappJoinStatus.textContent = message;
+    }
+  }
+
+  window.onWhatsAppTurnstileSuccess = (token) => {
+    turnstileToken = token;
+    if (whatsappJoinButton) {
+      whatsappJoinButton.disabled = false;
+    }
+    setWhatsAppStatus('');
+  };
+
+  window.onWhatsAppTurnstileExpired = () => {
+    turnstileToken = '';
+    if (whatsappJoinButton) {
+      whatsappJoinButton.disabled = true;
+    }
+    setWhatsAppStatus('Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
+  };
+
+  window.onWhatsAppTurnstileError = () => {
+    turnstileToken = '';
+    if (whatsappJoinButton) {
+      whatsappJoinButton.disabled = true;
+    }
+    setWhatsAppStatus('Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
+  };
+
+  whatsappJoinButton?.addEventListener('click', async () => {
+    if (!turnstileToken) {
+      setWhatsAppStatus('Bitte bestätige zuerst die CAPTCHA-Prüfung.');
+      return;
+    }
+
+    whatsappJoinButton.disabled = true;
+    setWhatsAppStatus('Einladung wird vorbereitet …');
+
+    try {
+      const response = await fetch('/api/whatsapp-invite', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: turnstileToken })
+      });
+
+      const result = await response.json();
+      if (!response.ok || typeof result.redirectUrl !== 'string') {
+        throw new Error(result.error || 'Einladung konnte nicht geladen werden.');
+      }
+
+      window.location.assign(result.redirectUrl);
+    } catch (error) {
+      turnstileToken = '';
+      setWhatsAppStatus(error.message || 'Einladung konnte nicht geladen werden.');
+      whatsappJoinButton.disabled = true;
+    }
+  });
+
+  // --------------------------------------------------------------------------
+  // 4. Sticky Header Shadow on Scroll
   // --------------------------------------------------------------------------
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
@@ -73,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   // --------------------------------------------------------------------------
-  // 4. Mobile Navigation Toggle
+  // 5. Mobile Navigation Toggle
   // --------------------------------------------------------------------------
   const navToggle = document.getElementById('navToggle');
   const primaryNav = document.getElementById('primaryNav');
@@ -129,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 5. Accessible Accordion FAQ
+  // 6. Accessible Accordion FAQ
   // --------------------------------------------------------------------------
   const accordionButtons = document.querySelectorAll('.accordion-header');
 
@@ -161,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 6. Accessible Contact & Membership Form Validation
+  // 7. Accessible Contact & Membership Form Validation
   // --------------------------------------------------------------------------
   const contactForm = document.getElementById('contactForm');
   const successAlert = document.getElementById('formSuccessMessage');
@@ -287,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 7. Modals (Impressum & Datenschutz Dialogs)
+  // 8. Modals (Impressum & Datenschutz Dialogs)
   // --------------------------------------------------------------------------
   const modalOpenButtons = document.querySelectorAll('[data-open-modal]');
   const modalCloseButtons = document.querySelectorAll('[data-close-modal]');

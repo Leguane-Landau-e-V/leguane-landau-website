@@ -32,6 +32,7 @@
   
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="style.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -494,6 +495,45 @@
             </p>
           </div>
 
+          <div class="whatsapp-join-card">
+            <div>
+              <span class="whatsapp-join-eyebrow">Unsere Community</span>
+              <h3>Zur WhatsApp-Gruppe</h3>
+              <p>Bestätige kurz, dass du ein echter Mensch bist. Danach kannst du direkt eine Beitrittsanfrage an unsere Gruppe senden.</p>
+            </div>
+            <div class="whatsapp-join-action">
+              <div
+                id="whatsappTurnstile"
+                class="cf-turnstile"
+                data-sitekey="0x4AAAAAAF49EWSqeiAYdgNc"
+                data-callback="onWhatsAppTurnstileSuccess"
+                data-expired-callback="onWhatsAppTurnstileExpired"
+                data-error-callback="onWhatsAppTurnstileError">
+              </div>
+              <button type="button" class="btn btn-primary" id="whatsappJoinButton" disabled>
+                WhatsApp-Gruppe beitreten
+              </button>
+              <p class="whatsapp-join-status" id="whatsappJoinStatus" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="whatsapp-join-card whatsapp-contact-card">
+            <div>
+              <span class="whatsapp-join-eyebrow">Interesse an Roundnet?</span>
+              <h3>Probetraining anfragen</h3>
+              <p>Schreib uns direkt über WhatsApp. Wir helfen dir gerne bei der Terminvereinbarung.</p>
+            </div>
+            <div class="whatsapp-join-action">
+              <a
+                class="btn btn-primary"
+                href="/api/whatsapp-probetraining"
+                target="_blank"
+                rel="noopener noreferrer">
+                Probetraining per WhatsApp anfragen
+              </a>
+            </div>
+          </div>
+
           <!-- Steps to Join -->
           <div class="join-steps">
             <div class="step-card">
@@ -650,7 +690,7 @@
             <h3>Instagram</h3>
             <p>Aktuelle Storys & Spieltage:</p>
             <!-- [PLATZHALTER: INSTAGRAM HANDLE] -->
-            <a href="https://instagram.com/[DEIN_INSTAGRAM_NAME]" target="_blank" rel="noopener noreferrer" class="contact-link">@[DEIN_INSTAGRAM_NAME]</a>
+            <a href="https://instagram.com/roundnet_landau" target="_blank" rel="noopener noreferrer" class="contact-link">@[DEIN_INSTAGRAM_NAME]</a>
           </div>
 
           <div class="contact-card">
@@ -677,17 +717,15 @@
         <h4>Angaben gemäß § 5 TMG</h4>
         <p>
           <strong>Leguane Landau e.V.</strong><br>
-          <!-- [PLATZHALTER: VEREINSADRESSE] -->
-          [Musterstraße 123]<br>
-          [76829 Landau in der Pfalz]<br>
+          Reiterstraße 29<br>
+          76829 Landau in der Pfalz<br>
           Deutschland
         </p>
 
         <h4>Vertreten durch den Vorstand:</h4>
         <p>
-          <!-- [PLATZHALTER: VORSTANDSNAMEN] -->
-          1. Vorsitzende/r: [VOR- UND NACHNAME]<br>
-          2. Vorsitzende/r: [VOR- UND NACHNAME]
+          1. Vorsitzende/r: Peter Hektor<br>
+          2. Vorsitzende/r: Moritz Berg
         </p>
 
         <h4>Registereintrag:</h4>
@@ -701,14 +739,14 @@
         <h4>Kontakt:</h4>
         <p>
           <!-- [PLATZHALTER: KONTAKTANGABEN] -->
-          E-Mail: kontakt@leguane-landau.de<br>
+          E-Mail: leguanelandau@gmx.de<br>
           Website: https://leguane-landau.de
         </p>
 
         <h4>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</h4>
         <p>
-          [VORNAME NACHNAME]<br>
-          [Musterstraße 123, 76829 Landau in der Pfalz]
+          Moritz Berg<br>
+          Reiterstraße 29, 76829 Landau in der Pfalz
         </p>
       </div>
       <div class="modal-footer">
@@ -726,7 +764,7 @@
       <div class="modal-body">
         <h4>1. Datenschutz auf einen Blick</h4>
         <p>
-          Diese Website wird als rein statische Website über Cloudflare Pages betrieben. Sie verwendet <strong>keine Tracking-Cookies</strong>, keine Analyse-Tools von Drittanbietern und lädt keine externen Schriftarten (Google Fonts) nach.
+          Diese Website wird über Cloudflare Workers betrieben. Sie verwendet <strong>keine Tracking-Cookies</strong> und keine Analyse-Tools. Für den geschützten Zugang zur WhatsApp-Gruppe wird Cloudflare Turnstile zur Erkennung automatisierter Anfragen eingesetzt. Dabei können technische Daten an Cloudflare übermittelt werden.
         </p>
 
         <h4>2. Erfassung von Daten beim Besuch dieser Website</h4>
@@ -742,8 +780,8 @@
         <h4>4. Verantwortliche Stelle</h4>
         <p>
           Leguane Landau e.V.<br>
-          <!-- [PLATZHALTER: DATENSCHUTZ KONTAKT] -->
-          E-Mail: kontakt@leguane-landau.de
+          Reiterstraße 29, 76829 Landau in der Pfalz<br>
+          E-Mail: leguanelandau@gmx.de
         </p>
       </div>
       <div class="modal-footer">

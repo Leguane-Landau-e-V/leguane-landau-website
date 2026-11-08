@@ -13,6 +13,8 @@ Website/
 ├── index.html        # Hauptstruktur, Texte, SEO & Metadaten, Modals
 ├── style.css         # Modernes CSS-Design, Farbvariablen, Responsive Grid
 ├── script.js         # Navigation, FAQ-Akkordeon, Formularvalidierung
+├── worker.js         # Cloudflare Worker für CAPTCHA und WhatsApp-Zugang
+├── wrangler.jsonc    # Cloudflare Workers-Konfiguration
 ├── assets/           # Vereinslogos und Scroll-Hintergrundvideo
 └── README.md         # Schritt-für-Schritt-Anleitung & Deployment-Guide
 ```
@@ -49,6 +51,35 @@ Ganz oben in den `:root`-Variablen kannst du mit einem Klick das Farbschema anpa
 
 Das Video `assets/Background-Animation/Test-Website-BG.mp4` wird beim Scrollen über die gesamte Seitenhöhe gesteuert: Der aktuelle Frame folgt der Scrollposition, statt automatisch abzuspielen. Es ist stumm eingebunden und für die Auslieferung optimiert (1920 × 1080, 24 FPS); Nutzer mit aktivierter Einstellung „Bewegung reduzieren“ sehen stattdessen den statischen Farb-Hintergrund.
 
+### WhatsApp-Gruppenzugang
+
+Der Button „WhatsApp-Gruppe beitreten“ verwendet Cloudflare Turnstile. Erst nach erfolgreicher Prüfung gibt [worker.js](worker.js) die Einladung aus. Die eigentliche WhatsApp-URL wird nicht im Repository gespeichert.
+
+Im Cloudflare-Workers-Projekt unter **Settings → Variables and Secrets** drei verschlüsselte Secrets hinzufügen:
+
+```text
+TURNSTILE_SECRET_KEY=<Turnstile Secret Key>
+WHATSAPP_GROUP_INVITE_URL=https://chat.whatsapp.com/<euer-einladungscode>
+```
+
+`TURNSTILE_SECRET_KEY` ist der geheime Schlüssel aus dem Turnstile-Dashboard. Der öffentliche Site Key steht bereits in [index.html](index.html). Nach dem Speichern eine neue Bereitstellung starten. In den WhatsApp-Gruppeneinstellungen sollte zusätzlich die Genehmigung neuer Teilnehmer aktiviert werden.
+
+Für direkte Anfragen zum Probetraining verwendet der Button den Worker-Endpunkt `/api/whatsapp-probetraining`. Die eigentliche `wa.me`-URL bleibt ebenfalls als verschlüsseltes Secret verborgen:
+
+```text
+WHATSAPP_PROBETRAINING_LINK=https://wa.me/<eure-nummer>?text=Hallo%20ich%20interessiere%20mich%20fuer%20ein%20Probetraining
+```
+
+### Cloudflare Workers Deployment
+
+Dieses Projekt wird als Cloudflare Worker mit statischen Assets bereitgestellt. Als Deploy-Befehl in Cloudflare Workers Builds bleibt:
+
+```text
+npx wrangler deploy
+```
+
+Die Datei [wrangler.jsonc](wrangler.jsonc) verwendet den Repository-Root als Asset-Verzeichnis und reserviert `/api/*` für den Worker. Alle anderen Anfragen werden direkt als Website-Dateien ausgeliefert.
+
 ---
 
 ## 2. 💻 Wie teste/öffne ich die Seite lokal in VS Code?
@@ -84,23 +115,26 @@ git push -u origin main
 
 ---
 
-## 4. ⚡ Wie deploye ich die Seite kostenlos auf Cloudflare Pages?
+## 4. ⚡ Wie deploye ich die Seite kostenlos auf Cloudflare Workers?
 
-Cloudflare Pages bietet unbegrenzte Bandbreite, weltweites CDN, kostenloses SSL/HTTPS und kostet **0 €**:
+Cloudflare Workers kann die statische Website und den geschützten WhatsApp-Zugang gemeinsam ausliefern:
 
 1. Erstelle einen kostenlosen Account auf [cloudflare.com](https://cloudflare.com).
-2. Klicke im linken Menü auf **Workers & Pages** > **Create application** > Reiter **Pages**.
-3. Klicke auf **Connect to Git** und wähle dein GitHub-Repository `leguane-landau-website` aus.
-4. **Build-Einstellungen konfigurieren:**
-   - **Framework preset:** `None`
-   - **Build command:** *(leer lassen)*
-   - **Build output directory:** `/` *(oder leer lassen)*
-5. Klicke auf **Save and Deploy**.
-6. Innerhalb weniger Sekunden ist deine Website unter einer URL wie `leguane-landau-website.pages.dev` weltweit online!
+2. Öffne **Workers & Pages** und wähle den bestehenden Worker `leguane-landau-website`.
+3. Verbinde ihn mit dem GitHub-Repository.
+4. Verwende als Deploy-Befehl:
+
+   ```text
+   npx wrangler deploy
+   ```
+
+5. Füge die beiden Secrets aus dem Abschnitt **WhatsApp-Gruppenzugang** hinzu.
+6. Klicke auf **Save and Deploy**.
+7. Nach jedem Push auf `main` wird der Worker neu bereitgestellt.
 
 ---
 
-## 5. 🌐 Wie verbinde ich `leguane-landau.de` (Namecheap) mit Cloudflare Pages?
+## 5. 🌐 Wie verbinde ich `leguane-landau.de` (Namecheap) mit Cloudflare Workers?
 
 Die Domain wird komplett von Cloudflare verwaltet (Nameserver-Methode). Das ist der zuverlässige Weg für die Hauptdomain ohne `www`.
 
@@ -117,9 +151,9 @@ Die Domain wird komplett von Cloudflare verwaltet (Nameserver-Methode). Das ist 
 4. **DNSSEC** bei Namecheap muss ausgeschaltet sein.
 5. In Cloudflare auf **Check nameservers now** klicken. Die Aktivierung dauert meist 1–2 Stunden (maximal 24 Stunden). Du erhältst eine E-Mail, sobald die Domain **Active** ist.
 
-### Schritt 3: Domain mit Cloudflare Pages verbinden
+### Schritt 3: Domain mit Cloudflare Workers verbinden
 Erst wenn die Domain **Active** ist:
-1. **Workers & Pages** > dein Projekt > **Custom domains** > **Set up a custom domain**.
+1. **Workers & Pages** > dein Worker > **Settings** > **Domains & Routes** > **Add Custom Domain**.
 2. `leguane-landau.de` eingeben und **Activate domain** klicken (Cloudflare legt den DNS-Eintrag selbst an).
 3. Das Gleiche für `www.leguane-landau.de` wiederholen.
 4. Warte, bis beide **Active** zeigen. Das SSL-Zertifikat wird automatisch und kostenlos ausgestellt.
