@@ -29,8 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (
         backgroundVideo.readyState < HTMLMediaElement.HAVE_METADATA ||
-        !Number.isFinite(backgroundVideo.duration) ||
-        backgroundVideo.seeking
+        !Number.isFinite(backgroundVideo.duration)
       ) {
         return;
       }
@@ -54,9 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         : 0;
       scheduleVideoSync();
     }
-
     backgroundVideo.addEventListener('loadedmetadata', scheduleVideoSync);
-    backgroundVideo.addEventListener('seeked', scheduleVideoSync);
+    backgroundVideo.addEventListener('loadedmetadata', scheduleVideoSync);
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     window.addEventListener('resize', updateScrollProgress);
     updateScrollProgress();

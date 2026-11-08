@@ -47,7 +47,7 @@ Ganz oben in den `:root`-Variablen kannst du mit einem Klick das Farbschema anpa
 }
 ```
 
-Das Video `assets/Background-Animation/Test-Website-BG.mp4` wird beim Scrollen über die gesamte Seitenhöhe gesteuert: Der aktuelle Frame folgt der Scrollposition, statt automatisch abzuspielen. Es ist stumm eingebunden; Nutzer mit aktivierter Einstellung „Bewegung reduzieren“ sehen stattdessen den statischen Farb-Hintergrund.
+Das Video `assets/Background-Animation/Test-Website-BG.mp4` wird beim Scrollen über die gesamte Seitenhöhe gesteuert: Der aktuelle Frame folgt der Scrollposition, statt automatisch abzuspielen. Es ist stumm eingebunden und für die Auslieferung optimiert (1920 × 1080, 24 FPS); Nutzer mit aktivierter Einstellung „Bewegung reduzieren“ sehen stattdessen den statischen Farb-Hintergrund.
 
 ---
 
