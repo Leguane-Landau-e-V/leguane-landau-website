@@ -40,7 +40,7 @@
   <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
 
   <div class="scroll-video-background" aria-hidden="true">
-    <video id="scrollBackgroundVideo" muted playsinline preload="metadata" tabindex="-1">
+    <video id="scrollBackgroundVideo" muted playsinline preload="auto" tabindex="-1">
       <source src="assets/Background-Animation/Test-Website-BG.mp4" type="video/mp4">
     </video>
     <div class="scroll-video-overlay"></div>
@@ -64,13 +64,17 @@
       <!-- Primary Navigation -->
       <nav class="primary-nav" id="primaryNav" aria-label="Hauptnavigation">
         <ul class="nav-list">
+          <li><a href="#contact" class="nav-link">Kontakt</a></li>
           <li><a href="#about" class="nav-link">Über uns</a></li>
           <li><a href="#offers" class="nav-link">Angebot</a></li>
           <li><a href="#events" class="nav-link">Termine</a></li>
-          <li><a href="#reasons" class="nav-link">Vorteile</a></li>
           <li><a href="#gallery" class="nav-link">Galerie</a></li>
           <li><a href="#faq" class="nav-link">FAQ</a></li>
-          <li><a href="#join" class="nav-link btn-nav-cta">Mitmachen</a></li>
+          <li><a href="#contact" class="nav-link btn-nav-cta">Probetraining</a></li>
+          <li class="language-switch" aria-label="Sprachauswahl">
+            <button type="button" class="language-button is-active" aria-pressed="true">DE</button>
+            <button type="button" class="language-button" aria-pressed="false" disabled title="Englische Version folgt">EN</button>
+          </li>
         </ul>
       </nav>
     </div>
@@ -82,14 +86,14 @@
     <section class="hero-section" id="hero" aria-labelledby="hero-title">
       <div class="container hero-container">
         <div class="hero-content">
-          <div class="badge-pill">🎉 Neu in Landau? Schnuppertraining jederzeit!</div>
+          <div class="badge-pill">Neu in Landau? Schnuppertraining jederzeit!</div>
           <h1 id="hero-title">Leguane Landau e.V.</h1>
           <p class="hero-subtitle">
             <!-- [PLATZHALTER: VEREINS-SLOGAN] -->
             Dynamisch, teamorientiert und offen für alle. Entdecke Roundnet in Landau und werde Teil unserer aktiven Community!
           </p>
           <div class="hero-actions">
-            <a href="#join" class="btn btn-primary">Jetzt Ausprobieren</a>
+            <a href="#contact" class="btn btn-primary">Kostenloses Probetraining</a>
             <a href="#about" class="btn btn-secondary">Mehr über uns</a>
           </div>
           <div class="hero-highlights">
@@ -111,11 +115,74 @@
           <!-- Dynamic Decorative Graphic -->
           <div class="hero-card-stack">
             <div class="hero-visual-card">
-              <div class="visual-badge">🟢 Aktiv</div>
+              <div class="visual-badge">Aktiv in Landau</div>
               <h3>Regelmäßiges Training</h3>
               <p>Draußen im Park & in der Halle</p>
               <div class="visual-tag">Lerne neue Leute kennen</div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Contacting Section -->
+    <section class="section section-contact section-contact-primary" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Kontakt</span>
+          <h2 id="contact-title">Lust auf eine Runde?</h2>
+          <p class="section-description">
+            Schreib uns kurz und komm kostenlos zum Probetraining vorbei. Oder verabrede dich unkompliziert zum freien Spielen.
+          </p>
+        </div>
+
+        <div class="contact-layout">
+          <div class="contact-whatsapp">
+            <div class="whatsapp-join-card">
+              <div>
+                <span class="whatsapp-join-eyebrow">Kostenloses Probetraining</span>
+                <h3>WhatsApp-Nachricht schreiben</h3>
+                <p>Schick uns eine kurze Nachricht. Wir finden gemeinsam einen passenden Trainingstermin.</p>
+              </div>
+              <div class="whatsapp-join-action">
+                <div
+                  id="whatsappTurnstile"
+                  class="cf-turnstile"
+                  data-sitekey="0x4AAAAAAF49EWSqeiAYdgNc"
+                  data-callback="onWhatsAppTurnstileSuccess"
+                  data-expired-callback="onWhatsAppTurnstileExpired"
+                  data-error-callback="onWhatsAppTurnstileError">
+                </div>
+                <button type="button" class="btn btn-primary" id="whatsappProbetrainingButton" disabled>
+                  WhatsApp-Nachricht schreiben
+                </button>
+                <p class="whatsapp-join-status" id="whatsappJoinStatus" role="status" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <div class="whatsapp-join-card whatsapp-contact-card">
+              <div>
+                <span class="whatsapp-join-eyebrow">Spontan spielen</span>
+                <h3>Roundnet außerhalb des Vereins</h3>
+                <p>Du möchtest einfach locker draußen spielen? In unserer Gruppe findest du Mitspielerinnen und Mitspieler.</p>
+              </div>
+              <div class="whatsapp-join-action">
+                <button type="button" class="btn btn-secondary" id="whatsappJoinButton" disabled>
+                  WhatsApp-Gruppe beitreten
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-quick-links">
+            <a class="contact-quick-link" href="https://instagram.com/roundnet_landau" target="_blank" rel="noopener noreferrer">
+              <span class="contact-quick-label">Instagram</span>
+              <strong>Finde und schreib uns auf Insta</strong>
+            </a>
+            <a class="contact-quick-link" href="mailto:kontakt@leguane-landau.de">
+              <span class="contact-quick-label">E-Mail</span>
+              <strong>Wenn das Fax mal spinnt.</strong>
+            </a>
           </div>
         </div>
       </div>
@@ -143,29 +210,23 @@
               <!-- [PLATZHALTER: DETAILS ZU ROUNDNET / SPORTART] -->
               Roundnet ist schnell, fair und macht ab der ersten Minute Spaß. Wir bieten regelmäßige Spieltreffs, gezieltes Techniktraining und organisieren lockere Turniere für jedes Level.
             </p>
-            <div class="info-box">
-              <strong>📍 Unser Treffpunkt:</strong>
-              <!-- [PLATZHALTER: GENAUER TREFFPUNKT] -->
-              <span>[TRAININGSORT: z.B. Goethepark / Sporthalle XY, 76829 Landau in der Pfalz]</span>
-            </div>
           </div>
 
-          <div class="about-stats-block">
-            <div class="stat-card">
-              <span class="stat-icon">🤝</span>
-              <h4>Gemeinschaft</h4>
-              <p>Offene Atmosphäre ohne Leistungsdruck – jede/r ist willkommen.</p>
-            </div>
-            <div class="stat-card">
-              <span class="stat-icon">⚡</span>
-              <h4>Schneller Einstieg</h4>
-              <p>In 5 Minuten erklärt, sofort mitspielen und Punkte sammeln.</p>
-            </div>
-            <div class="stat-card">
-              <span class="stat-icon">🏆</span>
-              <h4>Events & Fun</h4>
-              <p>Freundschaftsspiele, vereinsinterne Turniere und gemeinsame Ausflüge.</p>
-            </div>
+          <div class="about-image-grid">
+            <figure class="about-image-card about-image-community">
+              <img src="assets/neues%20Logo/Logo_Symbol.png" alt="Leguane-Landau-Logo">
+              <figcaption>
+                <strong>Gemeinschaft</strong>
+                <span>Offen, fair und gemeinsam auf dem Feld.</span>
+              </figcaption>
+            </figure>
+            <figure class="about-image-card about-image-entry">
+              <img src="assets/neues%20Logo/Logo_Symbol.png" alt="" aria-hidden="true">
+              <figcaption>
+                <strong>Schneller Einstieg</strong>
+                <span>In wenigen Minuten erklärt und direkt mitspielen.</span>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </div>
@@ -182,58 +243,44 @@
           </p>
         </div>
 
-        <div class="grid grid-3-col">
+        <div class="grid grid-3-col offer-image-grid">
           <article class="feature-card">
-            <div class="feature-icon">🎯</div>
-            <h3>Geführtes Training</h3>
+            <div class="feature-icon">01</div>
+            <h3>Angeleitetes Training</h3>
             <p>
-              <!-- [PLATZHALTER: DETAILS ZUM TRAINING] -->
-              Erlerne Aufschlagtechniken, Stellspiel, Angriffe und taktische Finessen von erfahrenen Spielerinnen und Spielern.
+              Für alle Spielstärken: Wir erklären die Basics, geben Tipps und helfen dir, dein Spiel weiterzuentwickeln.
             </p>
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon">🎒</div>
-            <h3>Equipment gestellt</h3>
-            <p>
-              <!-- [PLATZHALTER: DETAILS ZUM MATERIAL] -->
-              Du brauchst kein eigenes Set! Wir stellen Netze, Bälle und Markierungen für alle Teilnehmenden bereit.
-            </p>
-          </article>
-
-          <article class="feature-card">
-            <div class="feature-icon">☀️</div>
+            <div class="feature-icon">02</div>
             <h3>Sommer & Winter</h3>
             <p>
-              <!-- [PLATZHALTER: SAISONS / TRAININGSORTE] -->
-              Im Sommer spielen wir draußen auf Rasen und Sand, in der kalten Jahreszeit trainieren wir warm und trocken in der Halle.
+              Draußen unter der Sonne oder im Neonlicht der Halle – Roundnet gibt es bei uns das ganze Jahr.
             </p>
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon">🥇</div>
-            <h3>Turniere & Liga</h3>
+            <div class="feature-icon">03</div>
+            <h3>Equipment</h3>
             <p>
-              <!-- [PLATZHALTER: TURNIERE] -->
-              Für alle, die sich messen wollen: Teilnahme an regionalen Cups, Pick-Up Games und Vereinsmeisterschaften.
+              Wir stellen alles zum Spielen und Trainieren. Du brauchst nur sportliche Kleidung, um zu starten.
             </p>
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon">🍕</div>
+            <div class="feature-icon">04</div>
             <h3>Social Events</h3>
             <p>
-              <!-- [PLATZHALTER: SOCIAL EVENTS] -->
-              Gemeinsames Grillen nach dem Sommer-Training, Stammtische und Aktivitäten abseits des Spielfelds.
+              Gemeinsame Feste und Aktivitäten abseits des Spielfelds bringen Menschen zusammen und lassen Freundschaften entstehen.
             </p>
           </article>
 
           <article class="feature-card">
-            <div class="feature-icon">💸</div>
-            <h3>Faire Beiträge</h3>
+            <div class="feature-icon">05</div>
+            <h3>Leistungssport</h3>
             <p>
-              <!-- [PLATZHALTER: BEITRAGSKOSTEN] -->
-              Günstige Mitgliedschaft mit Rabatten für Schüler, Studierende und Auszubildende.
+              Du willst mehr erreichen? Finde gleichgesinnte Mitspieler*innen und engagiere dich in unseren Ligateams.
             </p>
           </article>
         </div>
@@ -251,96 +298,91 @@
           </p>
         </div>
 
+        <div class="event-filters" role="group" aria-label="Termine filtern">
+          <button type="button" class="event-filter is-active" data-event-filter="all">Alle</button>
+          <button type="button" class="event-filter" data-event-filter="training">Training</button>
+          <button type="button" class="event-filter" data-event-filter="social">Social Event</button>
+          <button type="button" class="event-filter" data-event-filter="tournament">Turnier</button>
+        </div>
+
+        <div class="season-status" id="seasonStatus" aria-live="polite"></div>
         <div class="events-list">
-          <!-- Event Item 1 -->
-          <article class="event-card">
+          <article class="event-card seasonal-event" data-season="winter" data-event-type="training">
             <div class="event-date">
-              <span class="event-day">Wöchentlich</span>
-              <span class="event-time">[ZEIT: z.B. Di 18:00 - 20:00]</span>
+              <span class="event-day">Montag</span>
+              <span class="event-time">18:00–20:00</span>
             </div>
             <div class="event-details">
-              <h3>Reguläres Vereinstraining & Schnuppern</h3>
-              <p class="event-location">📍 <span>[ORT: z.B. Rasenplatz Schulzentrum / Halle Landau]</span></p>
-              <p class="event-desc">Offenes Training für alle Levels. Ideal, um einfach vorbeizukommen und reinzuschnuppern.</p>
+              <span class="badge-tag">Winter</span>
+              <h3>Training</h3>
+              <p class="event-location"><a href="https://maps.google.com/?q=IGS+Sporthalle+West+Landau" target="_blank" rel="noopener noreferrer">IGS Sporthalle West, Landau</a></p>
+              <p class="event-desc">Angeleitetes Training für alle Spielstärken.</p>
             </div>
-            <div class="event-action">
-              <a href="#join" class="btn btn-outline">Anmelden</a>
-            </div>
+            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
           </article>
 
-          <!-- Event Item 2 -->
-          <article class="event-card">
+          <article class="event-card seasonal-event" data-season="winter" data-event-type="training">
             <div class="event-date">
-              <span class="event-day">Wöchentlich</span>
-              <span class="event-time">[ZEIT: z.B. Do 18:30 - 20:30]</span>
+              <span class="event-day">Montag</span>
+              <span class="event-time">20:00–22:00</span>
             </div>
             <div class="event-details">
-              <h3>Technik & Freies Spiel (Pick-Up)</h3>
-              <p class="event-location">📍 <span>[ORT: z.B. Goethepark Landau]</span></p>
-              <p class="event-desc">Fokus auf Spielpraxis, wechselnde Teams und Spielaufbau.</p>
+              <span class="badge-tag">Winter</span>
+              <h3>Freies Spiel</h3>
+              <p class="event-location"><a href="https://maps.google.com/?q=OHG+Sporthalle+Landau" target="_blank" rel="noopener noreferrer">OHG Sporthalle, Landau</a></p>
+              <p class="event-desc">Lockere Runden, wechselnde Teams und neue Spielpartner.</p>
             </div>
-            <div class="event-action">
-              <a href="#join" class="btn btn-outline">Anmelden</a>
-            </div>
+            <div class="event-action"><a href="#contact" class="btn btn-outline">Mitspielen</a></div>
           </article>
 
-          <!-- Event Item 3 -->
-          <article class="event-card event-special">
+          <article class="event-card seasonal-event" data-season="winter" data-event-type="training">
             <div class="event-date">
-              <span class="event-day">[DATUM: z.B. Sa, 25. Mai]</span>
-              <span class="event-time">13:00 Uhr</span>
+              <span class="event-day">Dienstag</span>
+              <span class="event-time">19:00–22:00</span>
             </div>
             <div class="event-details">
-              <span class="badge-tag">Special Event</span>
-              <h3>Leguane Fun-Turnier & Sommerfest</h3>
-              <p class="event-location">📍 <span>[ORT: Landau in der Pfalz]</span></p>
-              <p class="event-desc">Unser lockeres vereinsinternes Doppel-Turnier mit anschließendem BBQ. Auch für Neulinge geeignet!</p>
+              <span class="badge-tag">Winter</span>
+              <h3>Training & freies Spiel</h3>
+              <p class="event-location"><a href="https://maps.google.com/?q=OHG+Sporthalle+Landau" target="_blank" rel="noopener noreferrer">OHG Sporthalle, Landau</a></p>
+              <p class="event-desc">Gemeinsam trainieren und danach direkt weiterspielen.</p>
             </div>
-            <div class="event-action">
-              <a href="#contact" class="btn btn-primary">Details anfragen</a>
-            </div>
+            <div class="event-action"><a href="#contact" class="btn btn-outline">Mitspielen</a></div>
+          </article>
+
+          <article class="event-card seasonal-event" data-season="summer" data-event-type="training">
+            <div class="event-date"><span class="event-day">Montag</span><span class="event-time">19:00–22:00</span></div>
+            <div class="event-details"><span class="badge-tag">Sommer</span><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Training und Spiel unter freiem Himmel.</p></div>
+            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
+          </article>
+
+          <article class="event-card seasonal-event" data-season="summer" data-event-type="training">
+            <div class="event-date"><span class="event-day">Dienstag</span><span class="event-time">20:00–22:00</span></div>
+            <div class="event-details"><span class="badge-tag">Sommer</span><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Technik, Taktik und entspannte Matches.</p></div>
+            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
+          </article>
+
+          <article class="event-card seasonal-event" data-season="summer" data-event-type="training">
+            <div class="event-date"><span class="event-day">Donnerstag</span><span class="event-time">20:00–22:00</span></div>
+            <div class="event-details"><span class="badge-tag">Sommer</span><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Wöchentlicher Treff für alle, die spielen möchten.</p></div>
+            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
+          </article>
+
+          <article class="event-card event-special" data-season="all" data-event-type="tournament">
+            <div class="event-date"><span class="event-day">2027</span><span class="event-time">Termin folgt</span></div>
+            <div class="event-details"><span class="badge-tag">Noch nicht bestätigt</span><h3>Leguan Cup 2027</h3><p class="event-location">Ort und Datum werden später bekannt gegeben.</p><p class="event-desc">Sobald die Planung steht, findest du hier Anmeldung und alle Details.</p></div>
+            <div class="event-action"><a href="#contact" class="btn btn-primary">Updates anfragen</a></div>
+          </article>
+
+          <article class="event-card" data-season="summer" data-event-type="social">
+            <div class="event-date"><span class="event-day">Sommer 2027</span><span class="event-time">Termin folgt</span></div>
+            <div class="event-details"><span class="badge-tag">Social Event</span><h3>Sommerfest</h3><p class="event-location">Landau in der Pfalz</p><p class="event-desc">Gemeinsam spielen, essen und den Sommer feiern.</p></div>
+            <div class="event-action"><a href="#contact" class="btn btn-outline">Details anfragen</a></div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- 5. Reasons to Join -->
-    <section class="section section-reasons bg-light" id="reasons" aria-labelledby="reasons-title">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Warum mitmachen?</span>
-          <h2 id="reasons-title">4 gute Gründe, bei den Leguanen mitzuspielen</h2>
-          <p class="section-description">
-            Egal, ob du sportlichen Ausgleich suchst oder neue Leute in Landau kennenlernen möchtest.
-          </p>
-        </div>
-
-        <div class="grid grid-4-col">
-          <div class="reason-card">
-            <div class="reason-number">01</div>
-            <h3>Mega Community</h3>
-            <p>Freundliche Leute, hilfsbereite Mitspieler und ein entspannter Vibe.</p>
-          </div>
-          <div class="reason-card">
-            <div class="reason-number">02</div>
-            <h3>Ganzkörper-Fitness</h3>
-            <p>Schnelligkeit, Koordination, Ausdauer und Ballgefühl in einem Sport vereint.</p>
-          </div>
-          <div class="reason-card">
-            <div class="reason-number">03</div>
-            <h3>Null Hürden</h3>
-            <p>Keine teure Ausrüstung nötig. Sportsachen einpacken und direkt loslegen.</p>
-          </div>
-          <div class="reason-card">
-            <div class="reason-number">04</div>
-            <h3>Flexibel & günstig</h3>
-            <p>Keine langfristigen Knebelverträge, sondern ein bezahlbarer Vereinsbeitrag.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6. Photo Gallery Section (Placeholders with replaceable images) -->
+    <!-- 5. Photo Gallery Section (Placeholders with replaceable images) -->
     <section class="section section-gallery" id="gallery" aria-labelledby="gallery-title">
       <div class="container">
         <div class="section-header">
@@ -356,7 +398,7 @@
           <figure class="gallery-item">
             <div class="image-placeholder bg-gradient-1">
               <div class="placeholder-content">
-                <span class="placeholder-icon">📸</span>
+                <span class="placeholder-icon">Bild 01</span>
                 <span>[BILD: Sommertraining im Park]</span>
               </div>
             </div>
@@ -367,7 +409,7 @@
           <figure class="gallery-item">
             <div class="image-placeholder bg-gradient-2">
               <div class="placeholder-content">
-                <span class="placeholder-icon">🏐</span>
+                <span class="placeholder-icon">Bild 02</span>
                 <span>[BILD: Ballwechsel & Action]</span>
               </div>
             </div>
@@ -378,7 +420,7 @@
           <figure class="gallery-item">
             <div class="image-placeholder bg-gradient-3">
               <div class="placeholder-content">
-                <span class="placeholder-icon">👥</span>
+                <span class="placeholder-icon">Bild 03</span>
                 <span>[BILD: Team-Gruppenfoto]</span>
               </div>
             </div>
@@ -389,7 +431,7 @@
           <figure class="gallery-item">
             <div class="image-placeholder bg-gradient-4">
               <div class="placeholder-content">
-                <span class="placeholder-icon">🏛️</span>
+                <span class="placeholder-icon">Bild 04</span>
                 <span>[BILD: Hallentraining im Winter]</span>
               </div>
             </div>
@@ -397,7 +439,7 @@
           </figure>
         </div>
         <p class="gallery-hint">
-          💡 <em>Tipp: Ersetze die Platzhalter-Container im Code einfach durch <code>&lt;img src="assets/dein-bild.jpg" alt="..."&gt;</code>.</em>
+          <em>Empfohlene Bildformate: Querformat 4:3 für Training und Turniere, Hochformat 3:4 für Team- und Social-Momente. Ersetze die Platzhalter durch Vereinsfotos mit aussagekräftigem Alt-Text.</em>
         </p>
       </div>
     </section>
@@ -461,8 +503,7 @@
             </button>
             <div class="accordion-collapse" id="faq-ans-4" role="region" aria-labelledby="faq-btn-4" hidden>
               <div class="accordion-body">
-                <!-- [PLATZHALTER: BEITRAGSSÄTZE] -->
-                Der Mitgliedsbeitrag beträgt ca. <strong>[z.B. 30 € pro Jahr / 2,50 € im Monat]</strong> für reguläre Mitglieder und <strong>[z.B. 20 € pro Jahr]</strong> für Studierende, Schüler und Azubis.
+                Der Mitgliedsbeitrag beträgt <strong>72 € pro Jahr</strong>.
               </div>
             </div>
           </div>
@@ -478,227 +519,30 @@
                 Nein! Du kannst jederzeit alleine kommen. Wir mischen Teams bei jedem Training durch, sodass du schnell neue Spielpartner findest.
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- 8. Membership / Join Section -->
-    <section class="section section-join" id="join" aria-labelledby="join-title">
-      <div class="container">
-        <div class="join-banner">
-          <div class="join-header">
-            <span class="section-tag section-tag-light">Werde Teil des Teams</span>
-            <h2 id="join-title">Mitglied werden oder Probetraining buchen</h2>
-            <p>
-              Der einfachste Weg: Schick uns kurz eine Nachricht oder nutze unser Anmeldeformular. Wir melden uns umgehend bei dir!
-            </p>
-          </div>
-
-          <div class="whatsapp-join-card">
-            <div>
-              <span class="whatsapp-join-eyebrow">Unsere Community</span>
-              <h3>Zur WhatsApp-Gruppe</h3>
-              <p>Bestätige kurz, dass du ein echter Mensch bist. Danach kannst du direkt eine Beitrittsanfrage an unsere Gruppe senden.</p>
-            </div>
-            <div class="whatsapp-join-action">
-              <div
-                id="whatsappTurnstile"
-                class="cf-turnstile"
-                data-sitekey="0x4AAAAAAF49EWSqeiAYdgNc"
-                data-callback="onWhatsAppTurnstileSuccess"
-                data-expired-callback="onWhatsAppTurnstileExpired"
-                data-error-callback="onWhatsAppTurnstileError">
-              </div>
-              <button type="button" class="btn btn-primary" id="whatsappJoinButton" disabled>
-                WhatsApp-Gruppe beitreten
+            <div class="accordion-item">
+              <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-6" id="faq-btn-6">
+                <span>Kann ich als Anfänger/in an Turnieren teilnehmen?</span>
+                <span class="accordion-icon" aria-hidden="true">+</span>
               </button>
-              <p class="whatsapp-join-status" id="whatsappJoinStatus" role="status" aria-live="polite"></p>
-            </div>
-          </div>
-
-          <div class="whatsapp-join-card whatsapp-contact-card">
-            <div>
-              <span class="whatsapp-join-eyebrow">Interesse an Roundnet?</span>
-              <h3>Probetraining anfragen</h3>
-              <p>Schreib uns direkt über WhatsApp. Wir helfen dir gerne bei der Terminvereinbarung.</p>
-            </div>
-            <div class="whatsapp-join-action">
-              <a
-                class="btn btn-primary"
-                href="/api/whatsapp-probetraining"
-                target="_blank"
-                rel="noopener noreferrer">
-                Probetraining per WhatsApp anfragen
-              </a>
-            </div>
-          </div>
-
-          <!-- Steps to Join -->
-          <div class="join-steps">
-            <div class="step-card">
-              <div class="step-num">1</div>
-              <h4>Nachricht senden</h4>
-              <p>Trag dich unten im Formular ein und sag uns, wann du vorbeischauen willst.</p>
-            </div>
-            <div class="step-card">
-              <div class="step-num">2</div>
-              <h4>Kostenlos testen</h4>
-              <p>Komm zum Training, lerne uns kennen und probiere Roundnet aus.</p>
-            </div>
-            <div class="step-card">
-              <div class="step-num">3</div>
-              <h4>Dabei bleiben</h4>
-              <p>Wenn es dir gefällt, füllst du den Mitgliedsantrag aus und bist dabei!</p>
-            </div>
-          </div>
-
-          <!-- Option A: Built-in Accessible Form -->
-          <div class="form-wrapper" id="form-container">
-            <h3>Anfrage für Schnuppertraining / Mitgliedschaft</h3>
-            <p class="form-subtext">Deine Daten werden ausschließlich für die Beantwortung deiner Anfrage genutzt.</p>
-            
-            <!-- Success Message Notification -->
-            <div id="formSuccessMessage" class="alert alert-success" role="status" aria-live="polite" hidden>
-              <div class="alert-icon">✓</div>
-              <div class="alert-content">
-                <strong>Vielen Dank für deine Nachricht!</strong>
-                <p>Wir haben deine Anfrage erhalten und melden uns in Kürze per E-Mail bei dir.</p>
-              </div>
-            </div>
-
-            <!-- Error Summary -->
-            <div id="formErrorMessage" class="alert alert-error" role="alert" aria-live="assertive" hidden>
-              <div class="alert-icon">⚠️</div>
-              <div class="alert-content">
-                <strong>Bitte überprüfe deine Eingaben:</strong>
-                <p id="errorText">Es sind noch Felder unvollständig oder fehlerhaft ausgefüllt.</p>
-              </div>
-            </div>
-
-            <!-- Interactive Form with German Validation -->
-            <form id="contactForm" novalidate>
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="name">Dein Name <span class="required" aria-hidden="true">*</span></label>
-                  <input type="text" id="name" name="name" required placeholder="z.B. Alex Müller" autocomplete="name" aria-required="true">
-                  <span class="field-error" id="nameError" aria-live="polite"></span>
-                </div>
-
-                <div class="form-group">
-                  <label for="email">Deine E-Mail-Adresse <span class="required" aria-hidden="true">*</span></label>
-                  <input type="email" id="email" name="email" required placeholder="z.B. alex@example.de" autocomplete="email" aria-required="true">
-                  <span class="field-error" id="emailError" aria-live="polite"></span>
+              <div class="accordion-collapse" id="faq-ans-6" role="region" aria-labelledby="faq-btn-6" hidden>
+                <div class="accordion-body">
+                  Ja. Wir helfen dir beim Einstieg und empfehlen passende Turniere. Auch beim Leguan Cup sind Einsteigerinnen und Einsteiger willkommen.
                 </div>
               </div>
-
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="interest">Ich interessiere mich für <span class="required" aria-hidden="true">*</span></label>
-                  <select id="interest" name="interest" required aria-required="true">
-                    <option value="">Bitte auswählen...</option>
-                    <option value="probetraining">Kostenloses Probetraining</option>
-                    <option value="mitgliedschaft">Direkte Vereinsmitgliedschaft</option>
-                    <option value="frage">Allgemeine Frage</option>
-                  </select>
-                  <span class="field-error" id="interestError" aria-live="polite"></span>
-                </div>
-
-                <div class="form-group">
-                  <label for="experience">Erfahrungslevel</label>
-                  <select id="experience" name="experience">
-                    <option value="anfaenger">Komplette/r Neuling</option>
-                    <option value="fortgeschritten">Schon öfter gespielt</option>
-                    <option value="turnierspieler">Turniererfahrung</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="message">Deine Nachricht (optional)</label>
-                <textarea id="message" name="message" rows="4" placeholder="z.B. An welchem Wochentag möchtest du vorbeikommen? Bringst du Freunde mit?"></textarea>
-              </div>
-
-              <!-- Privacy Checkbox -->
-              <div class="form-group form-checkbox">
-                <input type="checkbox" id="privacyConsent" name="privacyConsent" required aria-required="true">
-                <label for="privacyConsent">
-                  Ich stimme zu, dass meine Angaben zur Kontaktaufnahme verwendet werden. <span class="required" aria-hidden="true">*</span>
-                </label>
-                <span class="field-error" id="privacyError" aria-live="polite"></span>
-              </div>
-
-              <div class="form-actions">
-                <button type="submit" class="btn btn-primary btn-large" id="submitBtn">
-                  Anfrage absenden
-                </button>
-              </div>
-            </form>
-
-            <!-- Option B: Optional External Form Container (Tally, Google Forms) -->
-            <!--
-            ===================================================================
-            HINWEIS ZUR EINBETTUNG VON TALLY ODER GOOGLE FORMS:
-            Wenn du stattdessen ein externes Formular einbetten möchtest:
-            1. Erstelle ein Formular auf https://tally.so oder Google Forms
-            2. Ersetze die URL im iframe unten durch deine Formular-URL
-            3. Entferne die HTML-Kommentarzeichen rund um den iframe-Block
-            ===================================================================
-            -->
-            <!--
-            <div class="external-form-container" style="margin-top: 2rem;">
-              <iframe 
-                src="https://tally.so/embed/[DEINE_TALLY_ODER_GOOGLE_FORMS_URL]?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-                loading="lazy" 
-                width="100%" 
-                height="500" 
-                frameborder="0" 
-                marginheight="0" 
-                marginwidth="0" 
-                title="Mitgliedsantrag / Kontaktformular">
-              </iframe>
             </div>
-            -->
 
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 9. Direct Contact & Location Section -->
-    <section class="section section-contact bg-light" id="contact" aria-labelledby="contact-title">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-tag">Direkter Kontakt</span>
-          <h2 id="contact-title">Wir freuen uns auf dich!</h2>
-          <p class="section-description">
-            Schreib uns direkt eine E-Mail oder melde dich über Social Media.
-          </p>
-        </div>
-
-        <div class="grid grid-3-col contact-cards">
-          <div class="contact-card">
-            <div class="contact-icon">✉️</div>
-            <h3>E-Mail</h3>
-            <p>Fragen, Feedback oder Anträge:</p>
-            <!-- [PLATZHALTER: KONTAKT E-MAIL] -->
-            <a href="mailto:kontakt@leguane-landau.de" class="contact-link">kontakt@leguane-landau.de</a>
-          </div>
-
-          <div class="contact-card">
-            <div class="contact-icon">📱</div>
-            <h3>Instagram</h3>
-            <p>Aktuelle Storys & Spieltage:</p>
-            <!-- [PLATZHALTER: INSTAGRAM HANDLE] -->
-            <a href="https://instagram.com/roundnet_landau" target="_blank" rel="noopener noreferrer" class="contact-link">@[DEIN_INSTAGRAM_NAME]</a>
-          </div>
-
-          <div class="contact-card">
-            <div class="contact-icon">📍</div>
-            <h3>Trainingsort</h3>
-            <p>Landau in der Pfalz</p>
-            <!-- [PLATZHALTER: STANDORT] -->
-            <span class="contact-detail">[ORT: z.B. Goethepark / Sporthalle Landau]</span>
+            <div class="accordion-item">
+              <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-7" id="faq-btn-7">
+                <span>Was ist der Unterschied zwischen Roundnet und Spikeball?</span>
+                <span class="accordion-icon" aria-hidden="true">+</span>
+              </button>
+              <div class="accordion-collapse" id="faq-ans-7" role="region" aria-labelledby="faq-btn-7" hidden>
+                <div class="accordion-body">
+                  Roundnet ist der Name der Sportart. Spikeball ist ein Markenname für ein entsprechendes Spielset – bei uns steht der Sport im Mittelpunkt.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -764,7 +608,7 @@
       <div class="modal-body">
         <h4>1. Datenschutz auf einen Blick</h4>
         <p>
-          Diese Website wird über Cloudflare Workers betrieben. Sie verwendet <strong>keine Tracking-Cookies</strong> und keine Analyse-Tools. Für den geschützten Zugang zur WhatsApp-Gruppe wird Cloudflare Turnstile zur Erkennung automatisierter Anfragen eingesetzt. Dabei können technische Daten an Cloudflare übermittelt werden.
+          Diese Website wird über Cloudflare Workers betrieben. Sie verwendet <strong>keine Tracking-Cookies</strong> und keine Analyse-Tools. Für die WhatsApp-Kontaktoptionen wird Cloudflare Turnstile zur Erkennung automatisierter Anfragen eingesetzt. Dabei können technische Daten an Cloudflare übermittelt werden.
         </p>
 
         <h4>2. Erfassung von Daten beim Besuch dieser Website</h4>
@@ -810,7 +654,7 @@
           <li><a href="#events">Termine</a></li>
           <li><a href="#gallery">Galerie</a></li>
           <li><a href="#faq">FAQ</a></li>
-          <li><a href="#join">Mitmachen</a></li>
+          <li><a href="#contact">Kontakt</a></li>
         </ul>
       </div>
 
@@ -821,7 +665,7 @@
           <li><button class="footer-modal-btn" data-open-modal="datenschutzModal">Datenschutz</button></li>
         </ul>
         <p class="cookie-notice">
-          🛡️ <strong>100% Tracking- & Cookie-frei:</strong> Wir respektieren deine Privatsphäre und setzen keine Analyse-Cookies ein.
+          <strong>100% Tracking- & Cookie-frei:</strong> Wir respektieren deine Privatsphäre und setzen keine Analyse-Cookies ein.
         </p>
       </div>
     </div>

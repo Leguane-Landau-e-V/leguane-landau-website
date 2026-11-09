@@ -53,7 +53,18 @@ document.addEventListener('DOMContentLoaded', () => {
         : 0;
       scheduleVideoSync();
     }
-    backgroundVideo.addEventListener('loadedmetadata', scheduleVideoSync);
+    backgroundVideo.addEventListener('loadedmetadata', () => {
+      backgroundVideo.preload = 'auto';
+      backgroundVideo.load();
+      backgroundVideo.play()
+        .then(() => {
+          backgroundVideo.pause();
+          scheduleVideoSync();
+        })
+        .catch(() => {
+          scheduleVideoSync();
+        });
+    }, { once: true });
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     window.addEventListener('resize', updateScrollProgress);
     updateScrollProgress();
@@ -63,8 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Protected WhatsApp Group Access
   // --------------------------------------------------------------------------
   const whatsappJoinButton = document.getElementById('whatsappJoinButton');
+  const whatsappProbetrainingButton = document.getElementById('whatsappProbetrainingButton');
   const whatsappJoinStatus = document.getElementById('whatsappJoinStatus');
   let turnstileToken = '';
+
+  function setWhatsAppButtonsDisabled(disabled) {
+    if (whatsappJoinButton) {
+      whatsappJoinButton.disabled = disabled;
+    }
+    if (whatsappProbetrainingButton) {
+      whatsappProbetrainingButton.disabled = disabled;
+    }
+  }
 
   function setWhatsAppStatus(message) {
     if (whatsappJoinStatus) {
@@ -74,39 +95,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.onWhatsAppTurnstileSuccess = (token) => {
     turnstileToken = token;
-    if (whatsappJoinButton) {
-      whatsappJoinButton.disabled = false;
-    }
+    setWhatsAppButtonsDisabled(false);
     setWhatsAppStatus('');
   };
 
   window.onWhatsAppTurnstileExpired = () => {
     turnstileToken = '';
-    if (whatsappJoinButton) {
-      whatsappJoinButton.disabled = true;
-    }
+    setWhatsAppButtonsDisabled(true);
     setWhatsAppStatus('Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
   };
 
   window.onWhatsAppTurnstileError = () => {
     turnstileToken = '';
-    if (whatsappJoinButton) {
-      whatsappJoinButton.disabled = true;
-    }
+    setWhatsAppButtonsDisabled(true);
     setWhatsAppStatus('Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
   };
 
-  whatsappJoinButton?.addEventListener('click', async () => {
+  async function openWhatsAppContact(endpoint, loadingMessage) {
     if (!turnstileToken) {
       setWhatsAppStatus('Bitte bestätige zuerst die CAPTCHA-Prüfung.');
       return;
     }
 
-    whatsappJoinButton.disabled = true;
-    setWhatsAppStatus('Einladung wird vorbereitet …');
+    setWhatsAppButtonsDisabled(true);
+    setWhatsAppStatus(loadingMessage);
 
     try {
-      const response = await fetch('/api/whatsapp-invite', {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: turnstileToken })
@@ -121,12 +136,83 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       turnstileToken = '';
       setWhatsAppStatus(error.message || 'Einladung konnte nicht geladen werden.');
-      whatsappJoinButton.disabled = true;
+      setWhatsAppButtonsDisabled(true);
     }
+  }
+
+  whatsappJoinButton?.addEventListener('click', () => {
+    openWhatsAppContact('/api/whatsapp-invite', 'Einladung wird vorbereitet …');
+  });
+
+  whatsappProbetrainingButton?.addEventListener('click', () => {
+    openWhatsAppContact('/api/whatsapp-probetraining', 'WhatsApp-Kontakt wird vorbereitet …');
   });
 
   // --------------------------------------------------------------------------
-  // 4. Sticky Header Shadow on Scroll
+  // 4. Seasonal Events and Calendar Filters
+  // --------------------------------------------------------------------------
+  const eventFilters = document.querySelectorAll('.event-filter');
+  const seasonalEvents = document.querySelectorAll('.seasonal-event');
+  const allEvents = document.querySelectorAll('.event-card');
+  const seasonStatus = document.getElementById('seasonStatus');
+  let activeEventFilter = 'all';
+
+  function getEasterDate(year) {
+    const a = year % 19;
+    const b = Math.floor(year / 100);
+    const c = year % 100;
+    const d = Math.floor(b / 4);
+    const e = b % 4;
+    const f = Math.floor((b + 8) / 25);
+    const g = Math.floor((b - f + 1) / 3);
+    const h = (19 * a + b - d - g + 15) % 30;
+    const i = Math.floor(c / 4);
+    const k = c % 4;
+    const l = (32 + 2 * e + 2 * i - h - k) % 7;
+    const m = Math.floor((a + 11 * h + 22 * l) / 451);
+    const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+    const day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month, day);
+  }
+
+  function getCurrentSeason() {
+    const today = new Date();
+    const easter = getEasterDate(today.getFullYear());
+    const isSummer = today >= easter && today.getMonth() <= 9;
+    return isSummer ? 'summer' : 'winter';
+  }
+
+  function updateEvents() {
+    const season = getCurrentSeason();
+    if (seasonStatus) {
+      seasonStatus.textContent = season === 'summer'
+        ? 'Sommerplan aktiv: April bis Oktober'
+        : 'Winterplan aktiv: November bis Ostern';
+    }
+
+    allEvents.forEach(event => {
+      const matchesSeason = event.dataset.season === 'all' || event.dataset.season === season;
+      const matchesFilter = activeEventFilter === 'all' || event.dataset.eventType === activeEventFilter;
+      event.hidden = !matchesSeason || !matchesFilter;
+    });
+  }
+
+  eventFilters.forEach(filter => {
+    filter.addEventListener('click', () => {
+      activeEventFilter = filter.dataset.eventFilter || 'all';
+      eventFilters.forEach(otherFilter => {
+        otherFilter.classList.toggle('is-active', otherFilter === filter);
+      });
+      updateEvents();
+    });
+  });
+
+  if (seasonalEvents.length || allEvents.length) {
+    updateEvents();
+  }
+
+  // --------------------------------------------------------------------------
+  // 5. Sticky Header Shadow on Scroll
   // --------------------------------------------------------------------------
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
@@ -138,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
 
   // --------------------------------------------------------------------------
-  // 5. Mobile Navigation Toggle
+  // 6. Mobile Navigation Toggle
   // --------------------------------------------------------------------------
   const navToggle = document.getElementById('navToggle');
   const primaryNav = document.getElementById('primaryNav');
@@ -194,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 6. Accessible Accordion FAQ
+  // 7. Accessible Accordion FAQ
   // --------------------------------------------------------------------------
   const accordionButtons = document.querySelectorAll('.accordion-header');
 
@@ -226,133 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --------------------------------------------------------------------------
-  // 7. Accessible Contact & Membership Form Validation
-  // --------------------------------------------------------------------------
-  const contactForm = document.getElementById('contactForm');
-  const successAlert = document.getElementById('formSuccessMessage');
-  const errorAlert = document.getElementById('formErrorMessage');
-
-  if (contactForm) {
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const interestInput = document.getElementById('interest');
-    const privacyCheckbox = document.getElementById('privacyConsent');
-
-    // Helper functions for validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    function setFieldError(input, errorElementId, errorMessage) {
-      input.classList.add('input-invalid');
-      const errorElem = document.getElementById(errorElementId);
-      if (errorElem) {
-        errorElem.textContent = errorMessage;
-      }
-    }
-
-    function clearFieldError(input, errorElementId) {
-      input.classList.remove('input-invalid');
-      const errorElem = document.getElementById(errorElementId);
-      if (errorElem) {
-        errorElem.textContent = '';
-      }
-    }
-
-    // Live validation event listeners
-    nameInput?.addEventListener('input', () => {
-      if (nameInput.value.trim().length >= 2) {
-        clearFieldError(nameInput, 'nameError');
-      }
-    });
-
-    emailInput?.addEventListener('input', () => {
-      if (emailRegex.test(emailInput.value.trim())) {
-        clearFieldError(emailInput, 'emailError');
-      }
-    });
-
-    interestInput?.addEventListener('change', () => {
-      if (interestInput.value !== '') {
-        clearFieldError(interestInput, 'interestError');
-      }
-    });
-
-    privacyCheckbox?.addEventListener('change', () => {
-      if (privacyCheckbox.checked) {
-        clearFieldError(privacyCheckbox, 'privacyError');
-      }
-    });
-
-    // Submit handler
-    contactForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-
-      let isValid = true;
-      let firstInvalidElement = null;
-
-      // Validate Name
-      if (!nameInput || nameInput.value.trim().length < 2) {
-        setFieldError(nameInput, 'nameError', 'Bitte gib deinen Namen ein (mindestens 2 Zeichen).');
-        isValid = false;
-        firstInvalidElement = firstInvalidElement || nameInput;
-      } else {
-        clearFieldError(nameInput, 'nameError');
-      }
-
-      // Validate Email
-      if (!emailInput || !emailRegex.test(emailInput.value.trim())) {
-        setFieldError(emailInput, 'emailError', 'Bitte gib eine gültige E-Mail-Adresse ein.');
-        isValid = false;
-        firstInvalidElement = firstInvalidElement || emailInput;
-      } else {
-        clearFieldError(emailInput, 'emailError');
-      }
-
-      // Validate Interest
-      if (!interestInput || interestInput.value === '') {
-        setFieldError(interestInput, 'interestError', 'Bitte wähle aus, wofür du dich interessierst.');
-        isValid = false;
-        firstInvalidElement = firstInvalidElement || interestInput;
-      } else {
-        clearFieldError(interestInput, 'interestError');
-      }
-
-      // Validate Privacy Checkbox
-      if (!privacyCheckbox || !privacyCheckbox.checked) {
-        setFieldError(privacyCheckbox, 'privacyError', 'Bitte bestätige die Datenschutzerklärung.');
-        isValid = false;
-        firstInvalidElement = firstInvalidElement || privacyCheckbox;
-      } else {
-        clearFieldError(privacyCheckbox, 'privacyError');
-      }
-
-      if (!isValid) {
-        if (errorAlert) errorAlert.hidden = false;
-        if (successAlert) successAlert.hidden = true;
-        if (firstInvalidElement) {
-          firstInvalidElement.focus();
-        }
-        return;
-      }
-
-      // If valid: Hide error, show success message
-      if (errorAlert) errorAlert.hidden = true;
-      if (successAlert) {
-        successAlert.hidden = false;
-        successAlert.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-
-      // Reset the form fields cleanly
-      contactForm.reset();
-
-      // OPTIONAL CLIENT-SIDE NOTIFICATION / SUBMISSION NOTE:
-      // Since this is a 100% static site without backend, you can either:
-      // 1. Connect a free service like Formspree (action="https://formspree.io/f/YOUR_ID")
-      // 2. Or replace this form with an embedded Tally / Google Forms iframe.
-    });
-  }
-
-  // --------------------------------------------------------------------------
-  // 8. Modals (Impressum & Datenschutz Dialogs)
+  // 7. Modals (Impressum & Datenschutz Dialogs)
   // --------------------------------------------------------------------------
   const modalOpenButtons = document.querySelectorAll('[data-open-modal]');
   const modalCloseButtons = document.querySelectorAll('[data-close-modal]');

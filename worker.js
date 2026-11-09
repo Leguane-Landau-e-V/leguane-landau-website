@@ -8,25 +8,13 @@ function jsonResponse(body, status = 200, headers = {}) {
   });
 }
 
-async function handleWhatsAppInvite(request, env) {
-  if (request.method !== 'POST') {
-    return jsonResponse({ error: 'Methode nicht erlaubt.' }, 405, { Allow: 'POST' });
-  }
-
-  let payload;
-  try {
-    payload = await request.json();
-  } catch {
-    return jsonResponse({ error: 'Ungültige Anfrage.' }, 400);
-  }
-
-  const token = typeof payload?.token === 'string' ? payload.token : '';
+async function verifyTurnstile(request, token, env) {
   if (!token) {
     return jsonResponse({ error: 'CAPTCHA-Bestätigung fehlt.' }, 400);
   }
 
-  if (!env.TURNSTILE_SECRET_KEY || !env.WHATSAPP_GROUP_INVITE_URL) {
-    return jsonResponse({ error: 'Die WhatsApp-Gruppe ist momentan nicht verfügbar.' }, 503);
+  if (!env.TURNSTILE_SECRET_KEY) {
+    return jsonResponse({ error: 'Die CAPTCHA-Prüfung ist momentan nicht verfügbar.' }, 503);
   }
 
   let verificationResponse;
@@ -56,6 +44,31 @@ async function handleWhatsAppInvite(request, env) {
     return jsonResponse({ error: 'CAPTCHA-Bestätigung abgelehnt.' }, 403);
   }
 
+  return null;
+}
+
+async function handleWhatsAppInvite(request, env) {
+  if (request.method !== 'POST') {
+    return jsonResponse({ error: 'Methode nicht erlaubt.' }, 405, { Allow: 'POST' });
+  }
+
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return jsonResponse({ error: 'Ungültige Anfrage.' }, 400);
+  }
+
+  const token = typeof payload?.token === 'string' ? payload.token : '';
+  if (!env.WHATSAPP_GROUP_INVITE_URL) {
+    return jsonResponse({ error: 'Die WhatsApp-Gruppe ist momentan nicht verfügbar.' }, 503);
+  }
+
+  const verificationError = await verifyTurnstile(request, token, env);
+  if (verificationError) {
+    return verificationError;
+  }
+
   let inviteUrl;
   try {
     inviteUrl = new URL(env.WHATSAPP_GROUP_INVITE_URL);
@@ -70,9 +83,22 @@ async function handleWhatsAppInvite(request, env) {
   return jsonResponse({ redirectUrl: inviteUrl.toString() });
 }
 
-function handleWhatsAppProbetraining(request, env) {
-  if (request.method !== 'GET') {
-    return jsonResponse({ error: 'Methode nicht erlaubt.' }, 405, { Allow: 'GET' });
+async function handleWhatsAppProbetraining(request, env) {
+  if (request.method !== 'POST') {
+    return jsonResponse({ error: 'Methode nicht erlaubt.' }, 405, { Allow: 'POST' });
+  }
+
+  let payload;
+  try {
+    payload = await request.json();
+  } catch {
+    return jsonResponse({ error: 'Ungültige Anfrage.' }, 400);
+  }
+
+  const token = typeof payload?.token === 'string' ? payload.token : '';
+  const verificationError = await verifyTurnstile(request, token, env);
+  if (verificationError) {
+    return verificationError;
   }
 
   if (!env.WHATSAPP_PROBETRAINING_LINK) {
@@ -90,7 +116,7 @@ function handleWhatsAppProbetraining(request, env) {
     return jsonResponse({ error: 'Der Probetraining-Kontakt ist nicht korrekt konfiguriert.' }, 503);
   }
 
-  return Response.redirect(contactUrl.toString(), 302);
+  return jsonResponse({ redirectUrl: contactUrl.toString() });
 }
 
 export default {

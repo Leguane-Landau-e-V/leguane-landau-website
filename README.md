@@ -53,7 +53,7 @@ Das Video `assets/Background-Animation/Test-Website-BG.mp4` wird beim Scrollen �
 
 ### WhatsApp-Gruppenzugang
 
-Der Button „WhatsApp-Gruppe beitreten“ verwendet Cloudflare Turnstile. Erst nach erfolgreicher Prüfung gibt [worker.js](worker.js) die Einladung aus. Die eigentliche WhatsApp-URL wird nicht im Repository gespeichert.
+Die Buttons „WhatsApp-Gruppe beitreten“ und „Probetraining per WhatsApp anfragen“ verwenden Cloudflare Turnstile. Erst nach erfolgreicher Prüfung gibt [worker.js](worker.js) jeweils die passende WhatsApp-URL aus. Die eigentlichen WhatsApp-URLs werden nicht im Repository gespeichert.
 
 Im Cloudflare-Workers-Projekt unter **Settings → Variables and Secrets** drei verschlüsselte Secrets hinzufügen:
 
