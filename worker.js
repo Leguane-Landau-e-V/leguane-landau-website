@@ -8,12 +8,13 @@ function jsonResponse(body, status = 200, headers = {}) {
   });
 }
 
-async function verifyTurnstile(request, token, env) {
+async function verifyTurnstile(request, token, env, secretName = 'TURNSTILE_SECRET_KEY') {
   if (!token) {
     return jsonResponse({ error: 'CAPTCHA-Bestätigung fehlt.' }, 400);
   }
 
-  if (!env.TURNSTILE_SECRET_KEY) {
+  const secret = env[secretName];
+  if (!secret) {
     return jsonResponse({ error: 'Die CAPTCHA-Prüfung ist momentan nicht verfügbar.' }, 503);
   }
 
@@ -25,7 +26,7 @@ async function verifyTurnstile(request, token, env) {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({
-          secret: env.TURNSTILE_SECRET_KEY,
+          secret,
           response: token,
           remoteip: request.headers.get('CF-Connecting-IP') || ''
         })
@@ -64,7 +65,7 @@ async function handleWhatsAppInvite(request, env) {
     return jsonResponse({ error: 'Die WhatsApp-Gruppe ist momentan nicht verfügbar.' }, 503);
   }
 
-  const verificationError = await verifyTurnstile(request, token, env);
+  const verificationError = await verifyTurnstile(request, token, env, 'TURNSTILE_SECRET_KEY2');
   if (verificationError) {
     return verificationError;
   }

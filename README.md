@@ -55,20 +55,18 @@ Das Video `assets/Background-Animation/Test-Website-BG.mp4` wird beim Scrollen �
 
 Die Buttons „WhatsApp-Gruppe beitreten“ und „Probetraining per WhatsApp anfragen“ verwenden Cloudflare Turnstile. Erst nach erfolgreicher Prüfung gibt [worker.js](worker.js) jeweils die passende WhatsApp-URL aus. Die eigentlichen WhatsApp-URLs werden nicht im Repository gespeichert.
 
-Im Cloudflare-Workers-Projekt unter **Settings → Variables and Secrets** drei verschlüsselte Secrets hinzufügen:
+Im Cloudflare-Workers-Projekt unter **Settings → Variables and Secrets** vier verschlüsselte Secrets hinzufügen:
 
 ```text
 TURNSTILE_SECRET_KEY=<Turnstile Secret Key>
+TURNSTILE_SECRET_KEY2=<Turnstile Secret Key für die WhatsApp-Gruppe>
 WHATSAPP_GROUP_INVITE_URL=https://chat.whatsapp.com/<euer-einladungscode>
-```
-
-`TURNSTILE_SECRET_KEY` ist der geheime Schlüssel aus dem Turnstile-Dashboard. Der öffentliche Site Key steht bereits in [index.html](index.html). Nach dem Speichern eine neue Bereitstellung starten. In den WhatsApp-Gruppeneinstellungen sollte zusätzlich die Genehmigung neuer Teilnehmer aktiviert werden.
-
-Für direkte Anfragen zum Probetraining verwendet der Button den Worker-Endpunkt `/api/whatsapp-probetraining`. Die eigentliche `wa.me`-URL bleibt ebenfalls als verschlüsseltes Secret verborgen:
-
-```text
 WHATSAPP_PROBETRAINING_LINK=https://wa.me/<eure-nummer>?text=Hallo%20ich%20interessiere%20mich%20fuer%20ein%20Probetraining
 ```
+
+`TURNSTILE_SECRET_KEY` gehört zum Probetraining-Widget. `TURNSTILE_SECRET_KEY2` gehört zum WhatsApp-Gruppen-Widget. Die öffentlichen Site Keys stehen in [index.html](index.html). Nach dem Speichern eine neue Bereitstellung starten. In den WhatsApp-Gruppeneinstellungen sollte zusätzlich die Genehmigung neuer Teilnehmer aktiviert werden.
+
+Für direkte Anfragen zum Probetraining verwendet der Button den Worker-Endpunkt `/api/whatsapp-probetraining`. Die eigentliche `wa.me`-URL bleibt ebenfalls als verschlüsseltes Secret verborgen:
 
 ### Cloudflare Workers Deployment
 

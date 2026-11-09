@@ -167,9 +167,18 @@
                 <p>Du möchtest einfach locker draußen spielen? In unserer Gruppe findest du Mitspielerinnen und Mitspieler.</p>
               </div>
               <div class="whatsapp-join-action">
+                <div
+                  id="whatsappGroupTurnstile"
+                  class="cf-turnstile"
+                  data-sitekey="0x4AAAAAAF5sWmFex9t9DlAi"
+                  data-callback="onWhatsAppGroupTurnstileSuccess"
+                  data-expired-callback="onWhatsAppGroupTurnstileExpired"
+                  data-error-callback="onWhatsAppGroupTurnstileError">
+                </div>
                 <button type="button" class="btn btn-secondary" id="whatsappJoinButton" disabled>
                   WhatsApp-Gruppe beitreten
                 </button>
+                <p class="whatsapp-join-status" id="whatsappGroupStatus" role="status" aria-live="polite"></p>
               </div>
             </div>
           </div>

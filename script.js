@@ -76,14 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const whatsappJoinButton = document.getElementById('whatsappJoinButton');
   const whatsappProbetrainingButton = document.getElementById('whatsappProbetrainingButton');
   const whatsappJoinStatus = document.getElementById('whatsappJoinStatus');
-  let turnstileToken = '';
+  const whatsappGroupStatus = document.getElementById('whatsappGroupStatus');
+  const probetrainingToken = { value: '' };
+  const groupToken = { value: '' };
 
-  function setWhatsAppButtonsDisabled(disabled) {
-    if (whatsappJoinButton) {
-      whatsappJoinButton.disabled = disabled;
-    }
-    if (whatsappProbetrainingButton) {
-      whatsappProbetrainingButton.disabled = disabled;
+  function setWhatsAppButtonDisabled(button, disabled) {
+    if (button) {
+      button.disabled = disabled;
     }
   }
 
@@ -93,38 +92,69 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  function setWhatsAppGroupStatus(message) {
+    if (whatsappGroupStatus) {
+      whatsappGroupStatus.textContent = message;
+    }
+  }
+
+  function resetTurnstile(widgetId) {
+    const widget = document.getElementById(widgetId);
+    if (window.turnstile && widget) {
+      window.turnstile.reset(widget);
+    }
+  }
+
   window.onWhatsAppTurnstileSuccess = (token) => {
-    turnstileToken = token;
-    setWhatsAppButtonsDisabled(false);
+    probetrainingToken.value = token;
+    setWhatsAppButtonDisabled(whatsappProbetrainingButton, false);
     setWhatsAppStatus('');
   };
 
   window.onWhatsAppTurnstileExpired = () => {
-    turnstileToken = '';
-    setWhatsAppButtonsDisabled(true);
+    probetrainingToken.value = '';
+    setWhatsAppButtonDisabled(whatsappProbetrainingButton, true);
     setWhatsAppStatus('Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
   };
 
   window.onWhatsAppTurnstileError = () => {
-    turnstileToken = '';
-    setWhatsAppButtonsDisabled(true);
+    probetrainingToken.value = '';
+    setWhatsAppButtonDisabled(whatsappProbetrainingButton, true);
     setWhatsAppStatus('Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
   };
 
-  async function openWhatsAppContact(endpoint, loadingMessage) {
-    if (!turnstileToken) {
-      setWhatsAppStatus('Bitte bestätige zuerst die CAPTCHA-Prüfung.');
+  window.onWhatsAppGroupTurnstileSuccess = (token) => {
+    groupToken.value = token;
+    setWhatsAppButtonDisabled(whatsappJoinButton, false);
+    setWhatsAppGroupStatus('');
+  };
+
+  window.onWhatsAppGroupTurnstileExpired = () => {
+    groupToken.value = '';
+    setWhatsAppButtonDisabled(whatsappJoinButton, true);
+    setWhatsAppGroupStatus('Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
+  };
+
+  window.onWhatsAppGroupTurnstileError = () => {
+    groupToken.value = '';
+    setWhatsAppButtonDisabled(whatsappJoinButton, true);
+    setWhatsAppGroupStatus('Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
+  };
+
+  async function openWhatsAppContact(endpoint, loadingMessage, statusSetter, tokenState, button, widgetId) {
+    if (!tokenState.value) {
+      statusSetter('Bitte bestätige zuerst die CAPTCHA-Prüfung.');
       return;
     }
 
-    setWhatsAppButtonsDisabled(true);
-    setWhatsAppStatus(loadingMessage);
+    setWhatsAppButtonDisabled(button, true);
+    statusSetter(loadingMessage);
 
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: turnstileToken })
+        body: JSON.stringify({ token: tokenState.value })
       });
 
       const result = await response.json();
@@ -134,18 +164,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
       window.location.assign(result.redirectUrl);
     } catch (error) {
-      turnstileToken = '';
-      setWhatsAppStatus(error.message || 'Einladung konnte nicht geladen werden.');
-      setWhatsAppButtonsDisabled(true);
+      tokenState.value = '';
+      statusSetter(error.message || 'WhatsApp-Kontakt konnte nicht geladen werden.');
+      setWhatsAppButtonDisabled(button, true);
+      resetTurnstile(widgetId);
     }
   }
 
   whatsappJoinButton?.addEventListener('click', () => {
-    openWhatsAppContact('/api/whatsapp-invite', 'Einladung wird vorbereitet …');
+    openWhatsAppContact(
+      '/api/whatsapp-invite',
+      'Einladung wird vorbereitet …',
+      setWhatsAppGroupStatus,
+      groupToken,
+      whatsappJoinButton,
+      'whatsappGroupTurnstile'
+    );
   });
 
   whatsappProbetrainingButton?.addEventListener('click', () => {
-    openWhatsAppContact('/api/whatsapp-probetraining', 'WhatsApp-Kontakt wird vorbereitet …');
+    openWhatsAppContact(
+      '/api/whatsapp-probetraining',
+      'WhatsApp-Kontakt wird vorbereitet …',
+      setWhatsAppStatus,
+      probetrainingToken,
+      whatsappProbetrainingButton,
+      'whatsappTurnstile'
+    );
   });
 
   // --------------------------------------------------------------------------
