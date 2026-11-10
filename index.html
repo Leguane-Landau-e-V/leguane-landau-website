@@ -72,8 +72,12 @@
           <li><a href="#faq" class="nav-link">FAQ</a></li>
           <li><a href="#contact" class="nav-link btn-nav-cta">Probetraining</a></li>
           <li class="language-switch" aria-label="Sprachauswahl">
-            <button type="button" class="language-button is-active" aria-pressed="true">DE</button>
-            <button type="button" class="language-button" aria-pressed="false" disabled title="Englische Version folgt">EN</button>
+            <button type="button" class="language-button is-active" data-language="de" aria-pressed="true">
+              <img class="language-flag" src="assets/Socials%20Logos/germany-flag-circular-17755_16.png" alt="" aria-hidden="true"><span>DE</span>
+            </button>
+            <button type="button" class="language-button" data-language="en" aria-pressed="false">
+              <img class="language-flag" src="assets/Socials%20Logos/uk-flag-circular-17883_16.png" alt="" aria-hidden="true"><span>EN</span>
+            </button>
           </li>
         </ul>
       </nav>
@@ -85,16 +89,19 @@
     <!-- 1. Hero Section -->
     <section class="hero-section" id="hero" aria-labelledby="hero-title">
       <div class="container hero-container">
+        <div class="poster-decorations" aria-hidden="true">
+          <span class="poster-shape poster-shape-orbit"></span>
+          <span class="poster-shape poster-shape-arrow">↗</span>
+        </div>
         <div class="hero-content">
           <div class="badge-pill">Neu in Landau? Schnuppertraining jederzeit!</div>
-          <h1 id="hero-title">Leguane Landau e.V.</h1>
+          <h1 id="hero-title"><span>Leguane</span><span>Landau</span></h1>
           <p class="hero-subtitle">
             <!-- [PLATZHALTER: VEREINS-SLOGAN] -->
             Dynamisch, teamorientiert und offen für alle. Entdecke Roundnet in Landau und werde Teil unserer aktiven Community!
           </p>
           <div class="hero-actions">
-            <a href="#contact" class="btn btn-primary">Kostenloses Probetraining</a>
-            <a href="#about" class="btn btn-secondary">Mehr über uns</a>
+            <a href="#contact" class="btn btn-primary">Probetraining</a>
           </div>
           <div class="hero-highlights">
             <div class="hero-highlight-item">
@@ -105,25 +112,26 @@
               <span class="highlight-number">Alle</span>
               <span class="highlight-label">Spielstärken willkommen</span>
             </div>
-            <div class="hero-highlight-item">
-              <span class="highlight-number">Landau</span>
-              <span class="highlight-label">in der Pfalz</span>
-            </div>
           </div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
+        <div class="hero-visual">
           <!-- Dynamic Decorative Graphic -->
           <div class="hero-card-stack">
-            <div class="hero-visual-card">
+            <a class="hero-visual-card" href="#contact" aria-label="Regelmäßiges Training – WhatsApp-Kontakt öffnen">
               <div class="visual-badge">Aktiv in Landau</div>
               <h3>Regelmäßiges Training</h3>
               <p>Draußen im Park & in der Halle</p>
               <div class="visual-tag">Lerne neue Leute kennen</div>
-            </div>
+            </a>
           </div>
         </div>
       </div>
     </section>
+    <div class="section-loop" aria-hidden="true">
+      <svg viewBox="0 0 100 1000" preserveAspectRatio="none">
+        <path d="M78 0 C22 90 94 160 35 250 S18 390 76 470 S84 620 27 700 S18 850 73 1000"></path>
+      </svg>
+    </div>
 
     <!-- 2. Contacting Section -->
     <section class="section section-contact section-contact-primary" id="contact" aria-labelledby="contact-title">
@@ -153,8 +161,9 @@
                   data-expired-callback="onWhatsAppTurnstileExpired"
                   data-error-callback="onWhatsAppTurnstileError">
                 </div>
-                <button type="button" class="btn btn-primary" id="whatsappProbetrainingButton" disabled>
-                  WhatsApp-Nachricht schreiben
+                <button type="button" class="btn btn-primary whatsapp-button" id="whatsappProbetrainingButton" disabled>
+                  <img class="whatsapp-icon" src="assets/Socials%20Logos/whatsapp-logo-4454_24.png" alt="" aria-hidden="true">
+                  Nachricht
                 </button>
                 <p class="whatsapp-join-status" id="whatsappJoinStatus" role="status" aria-live="polite"></p>
               </div>
@@ -175,8 +184,9 @@
                   data-expired-callback="onWhatsAppGroupTurnstileExpired"
                   data-error-callback="onWhatsAppGroupTurnstileError">
                 </div>
-                <button type="button" class="btn btn-secondary" id="whatsappJoinButton" disabled>
-                  WhatsApp-Gruppe beitreten
+                <button type="button" class="btn btn-secondary whatsapp-button" id="whatsappJoinButton" disabled>
+                  <img class="whatsapp-icon" src="assets/Socials%20Logos/whatsapp-logo-4454_24.png" alt="" aria-hidden="true">
+                  Gruppe
                 </button>
                 <p class="whatsapp-join-status" id="whatsappGroupStatus" role="status" aria-live="polite"></p>
               </div>
@@ -185,12 +195,17 @@
 
           <div class="contact-quick-links">
             <a class="contact-quick-link" href="https://instagram.com/roundnet_landau" target="_blank" rel="noopener noreferrer">
+              <img class="contact-quick-icon" src="assets/Socials%20Logos/instagram-logo-8869_256.png" alt="" aria-hidden="true">
               <span class="contact-quick-label">Instagram</span>
-              <strong>Finde und schreib uns auf Insta</strong>
+              <strong>Schreib uns auf Insta</strong>
             </a>
-            <a class="contact-quick-link" href="mailto:kontakt@leguane-landau.de">
+            <a class="contact-quick-link" href="mailto:leguanelandau@gmx.de">
+              <svg class="contact-quick-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+                <path d="m4 7 8 6 8-6"></path>
+              </svg>
               <span class="contact-quick-label">E-Mail</span>
-              <strong>Wenn das Fax mal spinnt.</strong>
+              <strong>Mail, falls das Fax spinnt</strong>
             </a>
           </div>
         </div>
@@ -310,7 +325,6 @@
         <div class="event-filters" role="group" aria-label="Termine filtern">
           <button type="button" class="event-filter is-active" data-event-filter="all">Alle</button>
           <button type="button" class="event-filter" data-event-filter="training">Training</button>
-          <button type="button" class="event-filter" data-event-filter="social">Social Event</button>
           <button type="button" class="event-filter" data-event-filter="tournament">Turnier</button>
         </div>
 
@@ -322,12 +336,10 @@
               <span class="event-time">18:00–20:00</span>
             </div>
             <div class="event-details">
-              <span class="badge-tag">Winter</span>
               <h3>Training</h3>
-              <p class="event-location"><a href="https://maps.google.com/?q=IGS+Sporthalle+West+Landau" target="_blank" rel="noopener noreferrer">IGS Sporthalle West, Landau</a></p>
+              <p class="event-location"><img class="map-icon" src="assets/Socials%20Logos/google-maps-logo-address-23486_16.png" alt="" aria-hidden="true"><a href="https://maps.google.com/?q=IGS+Sporthalle+Ost+Landau" target="_blank" rel="noopener noreferrer">IGS Sporthalle Ost, Landau</a></p>
               <p class="event-desc">Angeleitetes Training für alle Spielstärken.</p>
             </div>
-            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
           </article>
 
           <article class="event-card seasonal-event" data-season="winter" data-event-type="training">
@@ -336,12 +348,10 @@
               <span class="event-time">20:00–22:00</span>
             </div>
             <div class="event-details">
-              <span class="badge-tag">Winter</span>
               <h3>Freies Spiel</h3>
               <p class="event-location"><a href="https://maps.google.com/?q=OHG+Sporthalle+Landau" target="_blank" rel="noopener noreferrer">OHG Sporthalle, Landau</a></p>
               <p class="event-desc">Lockere Runden, wechselnde Teams und neue Spielpartner.</p>
             </div>
-            <div class="event-action"><a href="#contact" class="btn btn-outline">Mitspielen</a></div>
           </article>
 
           <article class="event-card seasonal-event" data-season="winter" data-event-type="training">
@@ -350,30 +360,25 @@
               <span class="event-time">19:00–22:00</span>
             </div>
             <div class="event-details">
-              <span class="badge-tag">Winter</span>
               <h3>Training & freies Spiel</h3>
               <p class="event-location"><a href="https://maps.google.com/?q=OHG+Sporthalle+Landau" target="_blank" rel="noopener noreferrer">OHG Sporthalle, Landau</a></p>
               <p class="event-desc">Gemeinsam trainieren und danach direkt weiterspielen.</p>
             </div>
-            <div class="event-action"><a href="#contact" class="btn btn-outline">Mitspielen</a></div>
           </article>
 
           <article class="event-card seasonal-event" data-season="summer" data-event-type="training">
             <div class="event-date"><span class="event-day">Montag</span><span class="event-time">19:00–22:00</span></div>
-            <div class="event-details"><span class="badge-tag">Sommer</span><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Training und Spiel unter freiem Himmel.</p></div>
-            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
+            <div class="event-details"><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Training und Spiel unter freiem Himmel.</p></div>
           </article>
 
           <article class="event-card seasonal-event" data-season="summer" data-event-type="training">
             <div class="event-date"><span class="event-day">Dienstag</span><span class="event-time">20:00–22:00</span></div>
-            <div class="event-details"><span class="badge-tag">Sommer</span><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Technik, Taktik und entspannte Matches.</p></div>
-            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
+            <div class="event-details"><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Technik, Taktik und entspannte Matches.</p></div>
           </article>
 
           <article class="event-card seasonal-event" data-season="summer" data-event-type="training">
             <div class="event-date"><span class="event-day">Donnerstag</span><span class="event-time">20:00–22:00</span></div>
-            <div class="event-details"><span class="badge-tag">Sommer</span><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Wöchentlicher Treff für alle, die spielen möchten.</p></div>
-            <div class="event-action"><a href="#contact" class="btn btn-outline">Probetraining</a></div>
+            <div class="event-details"><h3>Training</h3><p class="event-location"><a href="https://maps.google.com/?q=Kunstrasenplätze+am+Ebenberg+Landau" target="_blank" rel="noopener noreferrer">Kunstrasenplätze am Ebenberg</a></p><p class="event-desc">Wöchentlicher Treff für alle, die spielen möchten.</p></div>
           </article>
 
           <article class="event-card event-special" data-season="all" data-event-type="tournament">
@@ -388,6 +393,7 @@
             <div class="event-action"><a href="#contact" class="btn btn-outline">Details anfragen</a></div>
           </article>
         </div>
+        <a class="calendar-tryout-float" href="#contact">Reinschnuppern ↗</a>
       </div>
     </section>
 
@@ -396,12 +402,15 @@
       <div class="container">
         <div class="section-header">
           <span class="section-tag">Eindrücke</span>
-          <h2 id="gallery-title">Galerie & Impressionen</h2>
+          <h2 id="gallery-title">Galerie</h2>
           <p class="section-description">
             Ein Blick auf unsere Spieltage und Aktionen. Tausche diese Bilder einfach durch deine Vereinsfotos aus!
           </p>
         </div>
 
+        <div class="gallery-word-cloud" aria-hidden="true">
+          <span>community</span><span>tournaments</span><span>friendship</span><span>fair play</span><span>socializing</span>
+        </div>
         <div class="gallery-grid">
           <!-- Gallery Item 1 -->
           <figure class="gallery-item">
@@ -528,8 +537,10 @@
                 Nein! Du kannst jederzeit alleine kommen. Wir mischen Teams bei jedem Training durch, sodass du schnell neue Spielpartner findest.
               </div>
             </div>
+          </div>
 
-            <div class="accordion-item">
+          <!-- FAQ 6 -->
+          <div class="accordion-item">
               <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-6" id="faq-btn-6">
                 <span>Kann ich als Anfänger/in an Turnieren teilnehmen?</span>
                 <span class="accordion-icon" aria-hidden="true">+</span>
@@ -539,9 +550,10 @@
                   Ja. Wir helfen dir beim Einstieg und empfehlen passende Turniere. Auch beim Leguan Cup sind Einsteigerinnen und Einsteiger willkommen.
                 </div>
               </div>
-            </div>
+          </div>
 
-            <div class="accordion-item">
+          <!-- FAQ 7 -->
+          <div class="accordion-item">
               <button class="accordion-header" aria-expanded="false" aria-controls="faq-ans-7" id="faq-btn-7">
                 <span>Was ist der Unterschied zwischen Roundnet und Spikeball?</span>
                 <span class="accordion-icon" aria-hidden="true">+</span>
@@ -550,7 +562,6 @@
                 <div class="accordion-body">
                   Roundnet ist der Name der Sportart. Spikeball ist ein Markenname für ein entsprechendes Spielset – bei uns steht der Sport im Mittelpunkt.
                 </div>
-              </div>
             </div>
           </div>
         </div>

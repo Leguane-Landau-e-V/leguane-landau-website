@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
+  document.documentElement.classList.add('js');
 
   // --------------------------------------------------------------------------
   // 1. Dynamic Current Year in Footer
@@ -15,7 +16,104 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 2. Scroll-Scrubbed Background Video
+  // 2. German / English Content
+  // --------------------------------------------------------------------------
+  let currentLanguage = 'de';
+  const languageButtons = document.querySelectorAll('.language-button');
+  const translationEntries = [
+    { selector: '.skip-link', de: 'Zum Hauptinhalt springen', en: 'Skip to main content' },
+    { selector: '.nav-link', de: ['Kontakt', 'Über uns', 'Angebot', 'Termine', 'Galerie', 'FAQ', 'Probetraining'], en: ['Contact', 'About us', 'Offers', 'Events', 'Gallery', 'FAQ', 'Try-out'] },
+    { selector: '.badge-pill', de: 'Neu in Landau? Schnuppertraining jederzeit!', en: 'New in Landau? Come try Roundnet anytime!' },
+    { selector: '.hero-subtitle', de: 'Dynamisch, teamorientiert und offen für alle. Entdecke Roundnet in Landau und werde Teil unserer aktiven Community!', en: 'Dynamic, team-focused and open to everyone. Discover Roundnet in Landau and join our active community!' },
+    { selector: '.hero-actions .btn', de: 'Probetraining', en: 'Try-out' },
+    { selector: '.hero-highlight-item .highlight-label', de: ['Kostenloses Schnuppern', 'Spielstärken willkommen'], en: ['Free try-out', 'All skill levels welcome'] },
+    { selector: '.visual-badge', de: 'Aktiv in Landau', en: 'Active in Landau' },
+    { selector: '.hero-visual-card h3', de: 'Regelmäßiges Training', en: 'Regular training' },
+    { selector: '.hero-visual-card p', de: 'Draußen im Park & in der Halle', en: 'Outdoors in the park & indoors' },
+    { selector: '.visual-tag', de: 'Lerne neue Leute kennen', en: 'Meet new people' },
+    { selector: '#contact .section-tag', de: 'Kontakt', en: 'Contact' },
+    { selector: '#contact-title', de: 'Lust auf eine Runde?', en: 'Ready for a round?' },
+    { selector: '#contact .section-description', de: 'Schreib uns kurz und komm kostenlos zum Probetraining vorbei. Oder verabrede dich unkompliziert zum freien Spielen.', en: 'Send us a quick message and join a free try-out. Or arrange a casual game with the community.' },
+    { selector: '.whatsapp-join-eyebrow', de: ['Kostenloses Probetraining', 'Spontan spielen'], en: ['Free try-out', 'Casual games'] },
+    { selector: '.whatsapp-join-card h3', de: ['WhatsApp-Nachricht schreiben', 'Roundnet außerhalb des Vereins'], en: ['Write a WhatsApp message', 'Roundnet outside the club'] },
+    { selector: '.whatsapp-join-card > div:first-child p', de: ['Schick uns eine kurze Nachricht. Wir finden gemeinsam einen passenden Trainingstermin.', 'Du möchtest einfach locker draußen spielen? In unserer Gruppe findest du Mitspielerinnen und Mitspieler.'], en: ['Send us a quick message and we will find a suitable training time together.', 'Want to play casually outdoors? Find fellow players in our group.'] },
+    { selector: '.whatsapp-button', de: ['Nachricht', 'Gruppe'], en: ['Message', 'Group'] },
+    { selector: '.contact-quick-label', de: ['Instagram', 'E-Mail'], en: ['Instagram', 'Email'] },
+    { selector: '.contact-quick-link strong', de: ['Schreib uns auf Insta', 'Mail, falls das Fax spinnt'], en: ['Message us on Insta', 'Email us anytime'] },
+    { selector: '#about .section-tag', de: 'Wer wir sind', en: 'Who we are' },
+    { selector: '#about-title', de: 'Über die Leguane Landau', en: 'About Leguane Landau' },
+    { selector: '#about .section-description', de: 'Gemeinsam Sport treiben, voneinander lernen und Spaß haben – das steht bei uns im Mittelpunkt.', en: 'Playing sports together, learning from one another and having fun – that is what matters to us.' },
+    { selector: '.about-text-block h3', de: 'Unsere Mission', en: 'Our mission' },
+    { selector: '.about-text-block p', de: ['Die Leguane Landau e.V. bringen sportbegeisterte Menschen in Landau zusammen. Egal, ob du Student, Schüler, Berufstätiger oder einfach neugierig bist: Bei uns steht die Freude an Bewegung und Fairplay an erster Stelle.', 'Roundnet ist schnell, fair und macht ab der ersten Minute Spaß. Wir bieten regelmäßige Spieltreffs, gezieltes Techniktraining und organisieren lockere Turniere für jedes Level.'], en: ['Leguane Landau e.V. brings sports enthusiasts together in Landau. Whether you are a student, working professional or simply curious, the joy of movement and fair play comes first here.', 'Roundnet is fast, fair and fun from the very first minute. We offer regular game meet-ups, focused skills training and relaxed tournaments for every level.'] },
+    { selector: '.about-image-card figcaption strong', de: ['Gemeinschaft', 'Schneller Einstieg'], en: ['Community', 'Easy to start'] },
+    { selector: '.about-image-card figcaption span', de: ['Offen, fair und gemeinsam auf dem Feld.', 'In wenigen Minuten erklärt und direkt mitspielen.'], en: ['Open, fair and together on the court.', 'Explained in minutes so you can play right away.'] },
+    { selector: '#offers .section-tag', de: 'Unser Angebot', en: 'What we offer' },
+    { selector: '#offers-title', de: 'Was dich bei uns erwartet', en: 'What to expect' },
+    { selector: '#offers .section-description', de: 'Alles, was du für einen gelungenen Einstieg und regelmäßiges Spielen brauchst.', en: 'Everything you need for a great start and regular games.' },
+    { selector: '.feature-card h3', de: ['Angeleitetes Training', 'Sommer & Winter', 'Equipment', 'Social Events', 'Leistungssport'], en: ['Coached training', 'Summer & winter', 'Equipment', 'Social events', 'Competitive play'] },
+    { selector: '.feature-card p', de: ['Für alle Spielstärken: Wir erklären die Basics, geben Tipps und helfen dir, dein Spiel weiterzuentwickeln.', 'Draußen unter der Sonne oder im Neonlicht der Halle – Roundnet gibt es bei uns das ganze Jahr.', 'Wir stellen alles zum Spielen und Trainieren. Du brauchst nur sportliche Kleidung, um zu starten.', 'Gemeinsame Feste und Aktivitäten abseits des Spielfelds bringen Menschen zusammen und lassen Freundschaften entstehen.', 'Du willst mehr erreichen? Finde gleichgesinnte Mitspieler*innen und engagiere dich in unseren Ligateams.'], en: ['For every skill level: we explain the basics, share tips and help you improve your game.', 'Under the sun or in the hall lights – Roundnet is played here all year round.', 'We provide everything for playing and training. Just bring comfortable sportswear.', 'Shared celebrations and activities away from the court bring people together and create friendships.', 'Want to go further? Meet like-minded players and get involved in our league teams.'] },
+    { selector: '#events .section-tag', de: 'Kalender', en: 'Calendar' },
+    { selector: '#events-title', de: 'Kommende Termine & Aktionen', en: 'Upcoming events & activities' },
+    { selector: '#events .section-description', de: 'Hier findest du unsere nächsten Trainingseinheiten, Schnuppertage und Treffen.', en: 'Find our next training sessions, try-out days and meet-ups here.' },
+    { selector: '.event-filter', de: ['Alle', 'Training', 'Turnier'], en: ['All', 'Training', 'Tournament'] },
+    { selector: '.event-day', de: ['Montag', 'Montag', 'Dienstag', 'Montag', 'Dienstag', 'Donnerstag', '2027', 'Sommer 2027'], en: ['Monday', 'Monday', 'Tuesday', 'Monday', 'Tuesday', 'Thursday', '2027', 'Summer 2027'] },
+    { selector: '.badge-tag', de: ['Noch nicht bestätigt', 'Social Event'], en: ['Not confirmed', 'Social event'] },
+    { selector: '.event-details h3', de: ['Training', 'Freies Spiel', 'Training & freies Spiel', 'Training', 'Training', 'Training', 'Leguan Cup 2027', 'Sommerfest'], en: ['Training', 'Open play', 'Training & open play', 'Training', 'Training', 'Training', 'Leguan Cup 2027', 'Summer party'] },
+    { selector: '.event-location a', de: ['IGS Sporthalle Ost, Landau', 'OHG Sporthalle, Landau', 'OHG Sporthalle, Landau', 'Kunstrasenplätze am Ebenberg', 'Kunstrasenplätze am Ebenberg', 'Kunstrasenplätze am Ebenberg'], en: ['IGS sports hall east, Landau', 'OHG sports hall, Landau', 'OHG sports hall, Landau', 'Ebenberg artificial turf pitches', 'Ebenberg artificial turf pitches', 'Ebenberg artificial turf pitches'] },
+    { selector: '.event-card:nth-child(7) .event-location, .event-card:nth-child(8) .event-location', de: ['Ort und Datum werden später bekannt gegeben.', 'Landau in der Pfalz'], en: ['Location and date will be announced later.', 'Landau in the Palatinate'] },
+    { selector: '.event-desc', de: ['Angeleitetes Training für alle Spielstärken.', 'Lockere Runden, wechselnde Teams und neue Spielpartner.', 'Gemeinsam trainieren und danach direkt weiterspielen.', 'Training und Spiel unter freiem Himmel.', 'Technik, Taktik und entspannte Matches.', 'Wöchentlicher Treff für alle, die spielen möchten.', 'Sobald die Planung steht, findest du hier Anmeldung und alle Details.', 'Gemeinsam spielen, essen und den Sommer feiern.'], en: ['Coached training for all skill levels.', 'Relaxed rounds, changing teams and new playing partners.', 'Train together and keep playing afterwards.', 'Training and games outdoors.', 'Skills, tactics and relaxed matches.', 'A weekly meet-up for everyone who wants to play.', 'Once planning is complete, registration and details will be available here.', 'Play, eat and celebrate summer together.'] },
+    { selector: '.event-action .btn', de: ['Updates anfragen', 'Details anfragen'], en: ['Request updates', 'Request details'] },
+    { selector: '#gallery .section-tag', de: 'Eindrücke', en: 'Highlights' },
+    { selector: '#gallery-title', de: 'Galerie', en: 'Gallery' },
+    { selector: '#gallery .section-description', de: 'Ein Blick auf unsere Spieltage und Aktionen. Tausche diese Bilder einfach durch deine Vereinsfotos aus!', en: 'A look at our game days and activities. Replace these placeholders with your club photos!' },
+    { selector: '.gallery-item figcaption', de: ['Training im Freien bei Sonnenschein', 'Spannende Rallies und Fairplay', 'Die Leguane nach dem Turnier', 'Action in der Halle in den Wintermonaten'], en: ['Outdoor training in the sunshine', 'Exciting rallies and fair play', 'The Leguan team after the tournament', 'Indoor action during winter'] },
+    { selector: '.gallery-hint em', de: 'Empfohlene Bildformate: Querformat 4:3 für Training und Turniere, Hochformat 3:4 für Team- und Social-Momente. Ersetze die Platzhalter durch Vereinsfotos mit aussagekräftigem Alt-Text.', en: 'Recommended image formats: landscape 4:3 for training and tournaments, portrait 3:4 for team and social moments. Replace the placeholders with club photos and descriptive alt text.' },
+    { selector: '.calendar-tryout-float', de: 'Reinschnuppern ↗', en: 'Try out ↗' },
+    { selector: '#faq .section-tag', de: 'Häufige Fragen', en: 'Frequently asked questions' },
+    { selector: '#faq-title', de: 'FAQ – Alles Wichtige auf einen Blick', en: 'FAQ – Everything at a glance' },
+    { selector: '#faq .section-description', de: 'Du hast Fragen zum Einstieg? Hier sind die Antworten auf die häufigsten Fragen.', en: 'Questions about getting started? Here are answers to the most common questions.' },
+    { selector: '.accordion-header > span:first-child', de: ['Kann ich auch als absolute/r Anfänger/in mitmachen?', 'Was muss ich zum ersten Training mitbringen?', 'Kostet das Probetraining etwas?', 'Wie hoch ist der Mitgliedsbeitrag?', 'Brauche ich einen festen Spielpartner?', 'Kann ich als Anfänger/in an Turnieren teilnehmen?', 'Was ist der Unterschied zwischen Roundnet und Spikeball?'], en: ['Can I join as a complete beginner?', 'What should I bring to my first training?', 'Does the try-out cost anything?', 'How much is the membership fee?', 'Do I need a fixed playing partner?', 'Can beginners take part in tournaments?', 'What is the difference between Roundnet and Spikeball?'] },
+    { selector: '.accordion-body', de: ['Ja, absolut! Die meisten von uns haben ohne Vorkenntnisse angefangen. Bei jedem Training erklären wir die Regeln und zeigen dir die Grundschläge.', 'Nur bequeme Sportkleidung, passende Sportschuhe (für Rasen oder Hallenschuhe mit heller Sohle im Winter) und etwas zu trinken. Netze und Bälle stellen wir!', 'Nein, bis zu 2–3 Probetrainings sind bei uns komplett kostenlos und unverbindlich.', 'Der Mitgliedsbeitrag beträgt 72 € pro Jahr.', 'Nein! Du kannst jederzeit alleine kommen. Wir mischen Teams bei jedem Training durch, sodass du schnell neue Spielpartner findest.', 'Ja. Wir helfen dir beim Einstieg und empfehlen passende Turniere. Auch beim Leguan Cup sind Einsteigerinnen und Einsteiger willkommen.', 'Roundnet ist der Name der Sportart. Spikeball ist ein Markenname für ein entsprechendes Spielset – bei uns steht der Sport im Mittelpunkt.'], en: ['Absolutely! Most of us started without any previous experience. We explain the rules and basic shots at every training session.', 'Just comfortable sportswear, suitable shoes and something to drink. We provide the nets and balls!', 'No. Up to 2–3 try-out sessions are completely free and non-binding.', 'Membership costs €72 per year.', 'No! You can always come alone. We mix teams at every training session so you quickly find new playing partners.', 'Yes. We help you get started and recommend suitable tournaments. Beginners are welcome at the Leguan Cup too.', 'Roundnet is the name of the sport. Spikeball is a brand name for a corresponding game set – we focus on the sport.'] },
+    { selector: '.footer-tagline', de: 'Dein Sportverein für Roundnet, Bewegung und Teamgeist in Landau in der Pfalz.', en: 'Your club for Roundnet, movement and team spirit in Landau in the Palatinate.' },
+    { selector: '.links-col h4', de: 'Navigation', en: 'Navigation' },
+    { selector: '.links-col a', de: ['Über uns', 'Unser Angebot', 'Termine', 'Galerie', 'FAQ', 'Kontakt'], en: ['About us', 'What we offer', 'Events', 'Gallery', 'FAQ', 'Contact'] },
+    { selector: '.legal-col h4', de: 'Rechtliches & Datenschutz', en: 'Legal & privacy' },
+    { selector: '.footer-modal-btn', de: ['Impressum', 'Datenschutz'], en: ['Legal notice', 'Privacy policy'] },
+    { selector: '.cookie-notice', de: '100% Tracking- & Cookie-frei: Wir respektieren deine Privatsphäre und setzen keine Analyse-Cookies ein.', en: '100% tracking- and cookie-free: We respect your privacy and do not use analytics cookies.' },
+    { selector: '.footer-bottom-container p:last-child', de: 'Made with ❤️ in Landau in der Pfalz', en: 'Made with ❤️ in Landau in the Palatinate' }
+  ];
+
+  function applyLanguage(language) {
+    currentLanguage = language;
+    document.documentElement.lang = language;
+
+    translationEntries.forEach(entry => {
+      const elements = document.querySelectorAll(entry.selector);
+      const values = Array.isArray(entry[language]) ? entry[language] : elements.length > 1
+        ? Array(elements.length).fill(entry[language])
+        : [entry[language]];
+      elements.forEach((element, index) => {
+        if (values[index] !== undefined) element.textContent = values[index];
+      });
+    });
+
+    languageButtons.forEach(button => {
+      const isActive = button.dataset.language === language;
+      button.classList.toggle('is-active', isActive);
+      button.setAttribute('aria-pressed', String(isActive));
+    });
+    document.title = language === 'en'
+      ? 'Leguane Landau e.V. – Roundnet & community in Landau'
+      : 'Leguane Landau e.V. – Roundnet & Community in Landau';
+    updateEvents();
+  }
+
+  languageButtons.forEach(button => {
+    button.addEventListener('click', () => applyLanguage(button.dataset.language || 'de'));
+  });
+
+  // --------------------------------------------------------------------------
+  // 3. Scroll-Scrubbed Background Video
   // --------------------------------------------------------------------------
   const backgroundVideo = document.getElementById('scrollBackgroundVideo');
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -51,11 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollProgress = scrollableHeight > 0
         ? Math.min(1, Math.max(0, window.scrollY / scrollableHeight))
         : 0;
+      document.documentElement.style.setProperty('--scroll-progress', scrollProgress.toString());
       scheduleVideoSync();
     }
     backgroundVideo.addEventListener('loadedmetadata', () => {
-      backgroundVideo.preload = 'auto';
-      backgroundVideo.load();
       backgroundVideo.play()
         .then(() => {
           backgroundVideo.pause();
@@ -114,13 +211,13 @@ document.addEventListener('DOMContentLoaded', () => {
   window.onWhatsAppTurnstileExpired = () => {
     probetrainingToken.value = '';
     setWhatsAppButtonDisabled(whatsappProbetrainingButton, true);
-    setWhatsAppStatus('Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
+    setWhatsAppStatus(currentLanguage === 'en' ? 'The verification expired. Please try again.' : 'Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
   };
 
   window.onWhatsAppTurnstileError = () => {
     probetrainingToken.value = '';
     setWhatsAppButtonDisabled(whatsappProbetrainingButton, true);
-    setWhatsAppStatus('Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
+    setWhatsAppStatus(currentLanguage === 'en' ? 'CAPTCHA verification is currently unavailable.' : 'Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
   };
 
   window.onWhatsAppGroupTurnstileSuccess = (token) => {
@@ -132,18 +229,18 @@ document.addEventListener('DOMContentLoaded', () => {
   window.onWhatsAppGroupTurnstileExpired = () => {
     groupToken.value = '';
     setWhatsAppButtonDisabled(whatsappJoinButton, true);
-    setWhatsAppGroupStatus('Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
+    setWhatsAppGroupStatus(currentLanguage === 'en' ? 'The verification expired. Please try again.' : 'Die Bestätigung ist abgelaufen. Bitte erneut bestätigen.');
   };
 
   window.onWhatsAppGroupTurnstileError = () => {
     groupToken.value = '';
     setWhatsAppButtonDisabled(whatsappJoinButton, true);
-    setWhatsAppGroupStatus('Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
+    setWhatsAppGroupStatus(currentLanguage === 'en' ? 'CAPTCHA verification is currently unavailable.' : 'Die CAPTCHA-Prüfung ist momentan nicht verfügbar.');
   };
 
   async function openWhatsAppContact(endpoint, loadingMessage, statusSetter, tokenState, button, widgetId) {
     if (!tokenState.value) {
-      statusSetter('Bitte bestätige zuerst die CAPTCHA-Prüfung.');
+      statusSetter(currentLanguage === 'en' ? 'Please complete the CAPTCHA verification first.' : 'Bitte bestätige zuerst die CAPTCHA-Prüfung.');
       return;
     }
 
@@ -159,13 +256,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const result = await response.json();
       if (!response.ok || typeof result.redirectUrl !== 'string') {
-        throw new Error(result.error || 'Einladung konnte nicht geladen werden.');
+        throw new Error(result.error || (currentLanguage === 'en' ? 'The invitation could not be loaded.' : 'Einladung konnte nicht geladen werden.'));
       }
 
       window.location.assign(result.redirectUrl);
     } catch (error) {
       tokenState.value = '';
-      statusSetter(error.message || 'WhatsApp-Kontakt konnte nicht geladen werden.');
+      statusSetter(error.message || (currentLanguage === 'en' ? 'The WhatsApp contact could not be loaded.' : 'WhatsApp-Kontakt konnte nicht geladen werden.'));
       setWhatsAppButtonDisabled(button, true);
       resetTurnstile(widgetId);
     }
@@ -174,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   whatsappJoinButton?.addEventListener('click', () => {
     openWhatsAppContact(
       '/api/whatsapp-invite',
-      'Einladung wird vorbereitet …',
+      currentLanguage === 'en' ? 'Preparing invitation …' : 'Einladung wird vorbereitet …',
       setWhatsAppGroupStatus,
       groupToken,
       whatsappJoinButton,
@@ -185,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   whatsappProbetrainingButton?.addEventListener('click', () => {
     openWhatsAppContact(
       '/api/whatsapp-probetraining',
-      'WhatsApp-Kontakt wird vorbereitet …',
+      currentLanguage === 'en' ? 'Preparing WhatsApp contact …' : 'WhatsApp-Kontakt wird vorbereitet …',
       setWhatsAppStatus,
       probetrainingToken,
       whatsappProbetrainingButton,
@@ -231,8 +328,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const season = getCurrentSeason();
     if (seasonStatus) {
       seasonStatus.textContent = season === 'summer'
-        ? 'Sommerplan aktiv: April bis Oktober'
-        : 'Winterplan aktiv: November bis Ostern';
+        ? (currentLanguage === 'en' ? 'Summer schedule active: April to October' : 'Sommerplan aktiv: April bis Oktober')
+        : (currentLanguage === 'en' ? 'Winter schedule active: November to Easter' : 'Winterplan aktiv: November bis Ostern');
     }
 
     allEvents.forEach(event => {
@@ -257,7 +354,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --------------------------------------------------------------------------
-  // 5. Sticky Header Shadow on Scroll
+  // 5. Poster Reveal Animations
+  // --------------------------------------------------------------------------
+  const revealElements = document.querySelectorAll(
+    '.section-header, .contact-quick-link, .feature-card, .event-card, .gallery-item'
+  );
+
+  revealElements.forEach(element => {
+    element.classList.add('reveal');
+  });
+
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealElements.forEach(element => revealObserver.observe(element));
+  } else {
+    revealElements.forEach(element => element.classList.add('is-visible'));
+  }
+
+  // --------------------------------------------------------------------------
+  // 6. Sticky Header Shadow on Scroll
   // --------------------------------------------------------------------------
   const header = document.getElementById('header');
   window.addEventListener('scroll', () => {
